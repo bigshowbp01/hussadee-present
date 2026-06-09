@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIGSHOW — Executive Presentation 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #060d1a;
+            overflow: hidden;
+            margin: 0;
+            width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ─── Container ─── */
+        #stage {
+            width: 1280px; height: 720px;
+            position: relative;
+            transform-origin: center center;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
+        }
+
+        /* ─── BG gradient ─── */
+        .slide-bg {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 900px 600px at 15% 50%, rgba(15,40,80,0.7) 0%, transparent 70%),
+                radial-gradient(ellipse 600px 400px at 85% 20%, rgba(10,25,60,0.5) 0%, transparent 70%),
+                linear-gradient(160deg, #0d1f3c 0%, #090f1e 50%, #060a14 100%);
+        }
+        .slide-bg-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .slide-bg-glow {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 700px 500px at 20% 60%, rgba(56,150,255,0.07) 0%, transparent 60%);
+        }
+
+        /* ─── Slide System ─── */
+        .slide {
+            position: absolute; inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateX(40px);
+            display: flex; flex-direction: column;
+        }
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+        .slide.prev {
+            transform: translateX(-40px);
+        }
+
+        /* ─── Typography ─── */
+        .text-glow-gold  { text-shadow: 0 0 20px rgba(255,196,0,0.6); }
+        .text-glow-blue  { text-shadow: 0 0 20px rgba(56,189,248,0.6); }
+        .text-glow-white { text-shadow: 0 0 30px rgba(255,255,255,0.3); }
+
+        /* ─── Nav Arrows ─── */
+        .nav-arrow {
+            position: absolute; top: 50%; z-index: 50;
+            transform: translateY(-50%);
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .nav-arrow:hover { background: rgba(255,255,255,0.15); transform: translateY(-50%) scale(1.1); }
+        #nav-prev { left: 14px; }
+        #nav-next { right: 14px; }
+
+        /* ─── Progress Dots ─── */
+        #progress-bar {
+            position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 8px; z-index: 50;
+        }
+        .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .dot.active { background: #f59e0b; width: 24px; border-radius: 4px; }
+
+        /* ─── Slide counter ─── */
+        #slide-counter {
+            position: absolute; bottom: 20px; right: 28px;
+            font-size: 11px; color: rgba(255,255,255,0.3); z-index: 50;
+            letter-spacing: 2px;
+        }
+
+        /* ─── Section label ─── */
+        .section-label {
+            font-size: 11px; letter-spacing: 3px; font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 6px;
+        }
+        /* ─── Divider ─── */
+        .h-divider {
+            height: 2px;
+            background: linear-gradient(90deg, #f59e0b, #3b82f6, transparent);
+            border-radius: 2px;
+            margin-bottom: 10px;
+            width: 80px;
+        }
+
+        /* ─── Profile circle (Slide 1) ─── */
+        .profile-ring {
+            width: 240px; height: 240px;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .profile-ring::before {
+            content: '';
+            position: absolute; inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #f59e0b, #3b82f6, #8b5cf6, #f59e0b);
+            animation: rotateBorder 4s linear infinite;
+            z-index: 0;
+        }
+        .profile-ring::after {
+            content: '';
+            position: absolute; inset: -2px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(245,158,11,0.5), rgba(59,130,246,0.5), rgba(139,92,246,0.5), rgba(245,158,11,0.5));
+            filter: blur(8px);
+            z-index: -1;
+            animation: rotateBorder 4s linear infinite;
+        }
+        @keyframes rotateBorder { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+        .profile-img-wrap {
+            position: absolute; inset: 4px; border-radius: 50%;
+            overflow: hidden; z-index: 1;
+            background: #0d1f3c;
+        }
+        .profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-img-placeholder {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column;
+            background: linear-gradient(135deg, #1e3a5f, #0d1f3c);
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            text-align: center;
+            gap: 6px;
+        }
+
+        /* ─── Trait cards (Slide 1) ─── */
+        .trait-card {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .trait-card:hover { background: rgba(255,255,255,0.07); }
+        .trait-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+        .trait-title { color: #f59e0b; font-weight: 700; font-size: 15px; }
+        .trait-body  { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.5; }
+
+        /* ─── Info table (Slide 1) ─── */
+        .info-table { width: 100%; }
+        .info-table tr td:first-child {
+            color: rgba(255,255,255,0.4); font-size: 12px;
+            padding: 3px 12px 3px 0; white-space: nowrap;
+        }
+        .info-table tr td:last-child {
+            color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 500;
+        }
+
+        /* ─── Project Card ─── */
+        .project-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .project-card:hover { border-color: rgba(245,158,11,0.4); transform: translateY(-2px); }
+
+        .project-screenshot {
+            width: 100%; aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #0f1f3d, #1a2a4a);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .project-screenshot img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .project-screenshot-placeholder {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; color: rgba(255,255,255,0.25); font-size: 12px; text-align: center;
+        }
+        .project-screenshot-placeholder .icon { font-size: 32px; }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px; border-radius: 4px;
+            font-size: 10px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .badge-gold   { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .badge-blue   { background: rgba(59,130,246,0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .badge-green  { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .badge-purple { background: rgba(139,92,246,0.2); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .badge-red    { background: rgba(239,68,68,0.2);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+        /* ─── Mindset icon box ─── */
+        .mindset-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 24px 20px;
+            transition: border-color 0.2s;
+        }
+        .mindset-box:hover { border-color: rgba(245,158,11,0.3); }
+
+        /* ─── Q&A ─── */
+        .qa-quote {
+            position: relative;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 28px 36px;
+        }
+
+        /* ─── Animations ─── */
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes pulse-glow {
+            0%,100%{box-shadow:0 0 20px rgba(245,158,11,0.3)}
+            50%{box-shadow:0 0 40px rgba(245,158,11,0.6)}
+        }
+        @keyframes fadeUp {
+            from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)}
+        }
+        .anim-float { animation: float 3s ease-in-out infinite; }
+        .anim-pulse-ring { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+        .slide.active .fade-up { animation: fadeUp 0.5s ease forwards; }
+        .slide.active .fade-up-1 { animation: fadeUp 0.5s 0.1s ease both; }
+        .slide.active .fade-up-2 { animation: fadeUp 0.5s 0.2s ease both; }
+        .slide.active .fade-up-3 { animation: fadeUp 0.5s 0.3s ease both; }
+        .slide.active .fade-up-4 { animation: fadeUp 0.5s 0.4s ease both; }
+        .slide.active .fade-up-5 { animation: fadeUp 0.5s 0.5s ease both; }
+        .slide.active .fade-up-6 { animation: fadeUp 0.5s 0.6s ease both; }
+
+        /* ─── Timeline line ─── */
+        .timeline-line {
+            position: absolute; left: 18px; top: 28px; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, #f59e0b, rgba(245,158,11,0.1));
+        }
+
+        /* ─── Skill bar ─── */
+        .skill-bar-track {
+            height: 6px; background: rgba(255,255,255,0.08);
+            border-radius: 3px; overflow: hidden;
+        }
+        .skill-bar-fill {
+            height: 100%; border-radius: 3px;
+            background: linear-gradient(90deg, #f59e0b, #3b82f6);
+            transition: width 1s ease;
+            width: 0;
+        }
+        .slide.active .skill-bar-fill { width: var(--pct); }
+    </style>
+</head>
+<body>
+
+<div id="stage">
+    <!-- Shared background layers (always visible) -->
+    <div class="slide-bg"></div>
+    <div class="slide-bg-grid"></div>
+    <div class="slide-bg-glow"></div>
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 0 — Hello, World! (Introduction)
+    ══════════════════════════════════════════════ -->
+    <div class="slide active" id="slide-0">
+        <div style="padding: 40px 56px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+
+            <!-- Headline -->
+            <div class="fade-up" style="margin-bottom:32px;">
+                <h1 style="font-size:54px; font-weight:800; color:#fff; margin:0; line-height:1.1;">
+                    Hello, <span style="color:#f59e0b;" class="text-glow-gold">World!</span>
+                    <span style="font-size:46px; margin-left:8px;">🌍</span>
+                </h1>
+                <div style="height:3px; width:120px; background:linear-gradient(90deg,#f59e0b,#3b82f6,transparent); border-radius:2px; margin-top:10px;"></div>
+            </div>
+
+            <div style="display:flex; gap:48px; align-items:center; flex:1;">
+
+                <!-- Left: Profile -->
+                <div class="fade-up-1" style="display:flex; flex-direction:column; align-items:center; gap:16px; flex-shrink:0;">
+                    <div class="profile-ring anim-pulse-ring" style="width:220px; height:220px;">
+                        <div class="profile-img-wrap">
+                            <img src="images/profile.jpg" alt="BIGSHOW"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="profile-img-placeholder" style="display:none;">
+                                <span style="font-size:48px;">👤</span>
+                                <span>วางรูปโปรไฟล์<br><code style="font-size:10px;">images/profile.jpg</code></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:22px; font-weight:800; color:#fff; letter-spacing:2px;">BIGSHOW</div>
+                        <div style="font-size:13px; color:#f59e0b; font-style:italic; margin-top:4px;">"Bridging Technology and Inner Exploration"</div>
+                    </div>
+
+                    <!-- Info table card -->
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px 20px; width:100%;">
+                        <div style="font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:2px; text-transform:uppercase; text-align:center; margin-bottom:10px;">
+                            T.C.C TECHNOLOGY CO., LTD.
+                        </div>
+                        <table class="info-table">
+                            <tr><td>Name</td><td>Mr. Hussadee Jaiaue</td></tr>
+                            <tr><td>Role</td><td>Senior Application Developer</td></tr>
+                            <tr><td>Division</td><td>Solution Development</td></tr>
+                            <tr><td>Emp No.</td><td>10300176</td></tr>
+                            <tr><td>Started</td><td>14/09/2020 (~5.7 ปี)</td></tr>
+                            <tr><td>Birth Year</td><td>1990</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Trait cards -->
+                <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+                    <div class="trait-card fade-up-2">
+                        <div class="trait-icon">💻</div>
+                        <div>
+                            <div class="trait-title">Tech &amp; AI Enthusiast:</div>
+                            <div class="trait-body">ผู้หลงใหลในนวัตกรรม มุ่งประยุกต์ใช้เทคโนโลยีและ <strong style="color:#fff;">AI</strong></div>
+                        </div>
+                    </div>
+                    <div class="trait-card fade-up-3">
+                        <div class="trait-icon">🧠</div>
+                        <div>
+                            <div class="trait-title">Mind Explorer:</div>
+                            <div class="trait-body">ผสานศาสตร์แห่ง <strong style="color:#fff;">Neuroscience, Psychology</strong> และ <strong style="color:#fff;">ปรัชญา</strong> เพื่อไขความลับของจิตใจ สู่การตื่นรู้</div>
+                        </div>
+                    </div>
+                    <div class="trait-card fade-up-4">
+                        <div class="trait-icon">🏄</div>
+                        <div>
+                            <div class="trait-title">Active Flow:</div>
+                            <div class="trait-body">ค้นหา "Flow State" ผ่านการก้าวข้ามขีดจำกัดทางร่างกาย เช่น <strong style="color:#fff;">Wakeboard, มวยไทย</strong> และ <strong style="color:#fff;">บาสเกตบอล</strong></div>
+                        </div>
+                    </div>
+                    <div class="trait-card fade-up-5">
+                        <div class="trait-icon">🐢</div>
+                        <div>
+                            <div class="trait-title">Life Balance:</div>
+                            <div class="trait-body">รักษาสมดุลชีวิตด้วยความเรียบง่าย ใช้เวลาคุณภาพกับสัตว์เลี้ยง (<strong style="color:#fff;">แมว 6 ตัว</strong> และ <strong style="color:#fff;">เต่าแก้มแดง</strong>)</div>
+                        </div>
+                    </div>
+                    <div class="trait-card fade-up-6">
+                        <div class="trait-icon">🌿</div>
+                        <div>
+                            <div class="trait-title">Wellness &amp; Mental Recovery:</div>
+                            <div class="trait-body">ฟื้นฟูสมดุลร่างกายด้วย <strong style="color:#fff;">Ice Bath</strong> และ <strong style="color:#fff;">คลื่นเสียงปาบัด (Sound Frequency)</strong> ควบคู่กับการเจริญสติและธรรมชาติ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-0 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 1 — Team & Role
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-1">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up">
+                <div class="section-label">Chapter 1 · Team &amp; Role</div>
+                <h2 style="font-size:40px; font-weight:800; color:#fff; margin:0 0 4px;">My Team &amp; Contribution</h2>
+                <div class="h-divider" style="width:120px;"></div>
+            </div>
+
+            <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px; margin-top:8px;">
+
+                <!-- Card 1 -->
+                <div class="mindset-box fade-up-1">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="font-size:28px;">👥</span>
+                        <div>
+                            <div style="font-size:18px; font-weight:700; color:#fbbf24;">ทีม Solution Development</div>
+                            <div style="font-size:12px; color:rgba(255,255,255,0.4);">~30 คน · หลายโปรเจกต์พร้อมกัน</div>
+                        </div>
+                    </div>
+                    <p style="color:rgba(255,255,255,0.7); font-size:14px; line-height:1.7; margin:0;">
+                        ดูแลและ Support สมาชิกในทีม ช่วยแก้ปัญหาด้านเทคนิค ลด Bottleneck
+                        และสร้างมาตรฐานการเขียน Code ให้ทีมเดินหน้าได้อย่างต่อเนื่อง
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="mindset-box fade-up-2">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="font-size:28px;">🔧</span>
+                        <div>
+                            <div style="font-size:18px; font-weight:700; color:#60a5fa;">Tech Stack หลัก</div>
+                            <div style="font-size:12px; color:rgba(255,255,255,0.4);">Full Stack · Backend · Mobile</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <span class="badge badge-blue">Go / Golang</span>
+                        <span class="badge badge-blue">TypeScript</span>
+                        <span class="badge badge-blue">React</span>
+                        <span class="badge badge-blue">React Native</span>
+                        <span class="badge badge-green">Next.js</span>
+                        <span class="badge badge-green">Firebase</span>
+                        <span class="badge badge-purple">SAP BAPI</span>
+                        <span class="badge badge-purple">T-SQL</span>
+                        <span class="badge badge-gold">Docker</span>
+                        <span class="badge badge-gold">CI/CD</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="mindset-box fade-up-3">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="font-size:28px;">🚀</span>
+                        <div>
+                            <div style="font-size:18px; font-weight:700; color:#34d399;">บทบาทที่ทำจริง</div>
+                        </div>
+                    </div>
+                    <ul style="color:rgba(255,255,255,0.7); font-size:14px; line-height:2; margin:0; padding:0; list-style:none;">
+                        <li>▶ ออกแบบ Architecture &amp; วาง Project Structure</li>
+                        <li>▶ Code Review &amp; ตั้งมาตรฐาน Best Practices</li>
+                        <li>▶ Mentor Junior Developer ในทีม</li>
+                    </ul>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="mindset-box fade-up-4">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="font-size:28px;">🎯</span>
+                        <div>
+                            <div style="font-size:18px; font-weight:700; color:#f472b6;">Vision ที่มุ่งสู่</div>
+                        </div>
+                    </div>
+                    <p style="color:rgba(255,255,255,0.7); font-size:14px; line-height:1.7; margin:0;">
+                        พัฒนาตัวเองสู่ <strong style="color:#f472b6;">Team Lead</strong> ที่สามารถขับเคลื่อนทีมให้มี
+                        Ownership ความรับผิดชอบ และทักษะที่พร้อมรับมือความท้าทายระดับ Enterprise
+                        ในอนาคต
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-1 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 2 — Past Project 1
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-2">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Chapter 2 · Notable Past Projects — 1/2</div>
+                <h2 style="font-size:36px; font-weight:800; color:#fff; margin:0 0 4px;">
+                    🏢 Warehouse Pallet Scanning System
+                </h2>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <span class="badge badge-gold">Past Project</span>
+                    <span class="badge badge-purple">SAP Integration</span>
+                    <span class="badge badge-blue">Mobile App</span>
+                </div>
+                <div class="h-divider" style="margin-top:10px;"></div>
+            </div>
+
+            <div style="flex:1; display:flex; gap:28px;">
+                <!-- Left: Screenshot -->
+                <div class="project-card fade-up-1" style="flex:1.2; display:flex; flex-direction:column;">
+                    <div class="project-screenshot" style="flex:1; aspect-ratio:unset;">
+                        <img src="images/projects/project1.jpg" alt="Warehouse System"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project1.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:14px 16px;">
+                        <div style="font-size:12px; color:rgba(255,255,255,0.4);">ตัวอย่าง UI ระบบ Pallet Scanning</div>
+                    </div>
+                </div>
+
+                <!-- Right: Details -->
+                <div style="flex:1; display:flex; flex-direction:column; gap:14px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:8px;">🎯 โจทย์และความท้าทาย</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
+                            ระบบเดิมใช้ <strong style="color:#f87171;">Ext JS (Web)</strong> และ <strong style="color:#f87171;">Xamarin (Mobile)</strong>
+                            เป็นเทคโนโลยีเก่า หาคนสานงานต่อยาก โหลดช้า บำรุงรักษาลำบาก
+                        </p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:8px;">✅ สิ่งที่ทำ</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:14px; line-height:2; margin:0; padding:0; list-style:none;">
+                            <li>▶ ออกแบบ Architecture ใหม่ด้วย <strong style="color:#60a5fa;">React Native</strong></li>
+                            <li>▶ เชื่อมต่อ SAP BAPI ผ่าน <strong style="color:#60a5fa;">Golang Backend</strong></li>
+                            <li>▶ ลด Response Time จาก ~3s → <strong style="color:#34d399;">&lt;0.1s</strong></li>
+                            <li>▶ รองรับ Offline Mode สำหรับพื้นที่ Signal ไม่ดี</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:8px;">📈 ผลลัพธ์ที่ได้</div>
+                        <div style="display:flex; gap:16px;">
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#34d399;">97%</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">ลด Error Rate</div>
+                            </div>
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#60a5fa;">30x</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">เร็วขึ้น</div>
+                            </div>
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#fbbf24;">✓</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">ทีมขยาย Dev ได้ง่าย</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-2 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 3 — Past Project 2
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-3">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Chapter 2 · Notable Past Projects — 2/2</div>
+                <h2 style="font-size:36px; font-weight:800; color:#fff; margin:0 0 4px;">
+                    🗺️ Logistics Route Optimization System
+                </h2>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <span class="badge badge-gold">Past Project</span>
+                    <span class="badge badge-purple">Algorithm</span>
+                    <span class="badge badge-blue">Backend Heavy</span>
+                </div>
+                <div class="h-divider" style="margin-top:10px;"></div>
+            </div>
+
+            <div style="flex:1; display:flex; gap:28px;">
+                <!-- Left: Screenshot -->
+                <div class="project-card fade-up-1" style="flex:1.2; display:flex; flex-direction:column;">
+                    <div class="project-screenshot" style="flex:1; aspect-ratio:unset;">
+                        <img src="images/projects/project2.jpg" alt="Routing System"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project2.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:14px 16px;">
+                        <div style="font-size:12px; color:rgba(255,255,255,0.4);">ตัวอย่าง UI ระบบ Route Optimization</div>
+                    </div>
+                </div>
+
+                <!-- Right: Details -->
+                <div style="flex:1; display:flex; flex-direction:column; gap:14px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:8px;">🎯 โจทย์และความท้าทาย</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
+                            ระบบคำนวณเส้นทางเดิมติดปัญหาเมื่อจุดส่งของเพิ่มขึ้น ได้ผลลัพธ์ที่ไม่ดีที่สุด
+                            ทำให้สิ้นเปลืองน้ำมันและต้นทุนโลจิสติกส์
+                        </p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:8px;">✅ สิ่งที่ทำ</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:14px; line-height:2; margin:0; padding:0; list-style:none;">
+                            <li>▶ วิจัยและนำ <strong style="color:#a78bfa;">Quantum-Inspired Algorithm</strong> มาปรับใช้</li>
+                            <li>▶ สร้าง Backend API สำหรับ Real-time Route Calculation</li>
+                            <li>▶ ทำ Visual Dashboard แสดง Route บน Map</li>
+                            <li>▶ Integrate กับระบบ TMS ที่มีอยู่เดิม</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:8px;">📈 ผลลัพธ์ที่ได้</div>
+                        <div style="display:flex; gap:16px;">
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#34d399;">-18%</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">Logistics Cost</div>
+                            </div>
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#60a5fa;">400x</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">คำนวณเร็วขึ้น</div>
+                            </div>
+                            <div style="text-align:center; flex:1;">
+                                <div style="font-size:28px; font-weight:800; color:#fbbf24;">Optimal</div>
+                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">Route Quality</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-3 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 4 — Current Projects Overview
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-4">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:20px;">
+                <div class="section-label">Chapter 3 · Current Projects</div>
+                <h2 style="font-size:38px; font-weight:800; color:#fff; margin:0 0 4px;">
+                    โปรเจกต์ที่กำลังดำเนินการ <span style="color:#34d399;">🟢 Active</span>
+                </h2>
+                <div class="h-divider"></div>
+                <p style="color:rgba(255,255,255,0.5); font-size:14px; margin:4px 0 0;">5 โปรเจกต์ที่กำลังขับเคลื่อนอยู่ในปัจจุบัน</p>
+            </div>
+
+            <div style="flex:1; display:grid; grid-template-columns: repeat(5,1fr); gap:12px;">
+                <!-- Project A -->
+                <div class="project-card fade-up-1" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(5)">
+                    <div class="project-screenshot">
+                        <img src="images/projects/project3.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            <code style="font-size:9px;">project3.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:12px;">
+                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
+                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">E-Commerce Platform</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Next.js · TypeScript</div>
+                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+                    </div>
+                </div>
+                <!-- Project B -->
+                <div class="project-card fade-up-2" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(6)">
+                    <div class="project-screenshot">
+                        <img src="images/projects/project4.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            <code style="font-size:9px;">project4.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:12px;">
+                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
+                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">HR Management App</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">React Native · Go</div>
+                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+                    </div>
+                </div>
+                <!-- Project C -->
+                <div class="project-card fade-up-3" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(7)">
+                    <div class="project-screenshot">
+                        <img src="images/projects/project5.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            <code style="font-size:9px;">project5.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:12px;">
+                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
+                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">Internal Dashboard</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">React · Firebase</div>
+                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+                    </div>
+                </div>
+                <!-- Project D -->
+                <div class="project-card fade-up-4" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(8)">
+                    <div class="project-screenshot">
+                        <img src="images/projects/project6.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            <code style="font-size:9px;">project6.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:12px;">
+                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
+                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">SAP Integration API</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Golang · SAP BAPI</div>
+                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+                    </div>
+                </div>
+                <!-- Project E -->
+                <div class="project-card fade-up-5" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(9)">
+                    <div class="project-screenshot">
+                        <img src="images/projects/project7.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span>
+                            <code style="font-size:9px;">project7.jpg</code>
+                        </div>
+                    </div>
+                    <div style="padding:12px;">
+                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
+                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">AI Assistant Tool</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Python · LLM API</div>
+                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-4 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDES 5–9 — Current Project Detail (Template ×5)
+    ══════════════════════════════════════════════ -->
+
+    <!-- Project 3 Detail -->
+    <div class="slide" id="slide-5">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Current Project 1 / 5</div>
+                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">🛒 E-Commerce Platform</h2>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <span class="badge badge-green">Active</span>
+                    <span class="badge badge-blue">Next.js</span>
+                    <span class="badge badge-blue">TypeScript</span>
+                    <span class="badge badge-gold">Tailwind CSS</span>
+                </div>
+                <div class="h-divider"></div>
+            </div>
+            <div style="flex:1; display:flex; gap:28px;">
+                <div class="project-card fade-up-1" style="flex:1.3;">
+                    <div class="project-screenshot" style="height:100%;">
+                        <img src="images/projects/project3.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span> วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project3.jpg</code>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
+                            แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง เช่น ระบบ Order ระบบ Product Management หรือ Payment Integration
+                        </p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
+                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-5 -->
+
+    <!-- Project 4 Detail -->
+    <div class="slide" id="slide-6">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Current Project 2 / 5</div>
+                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">👔 HR Management Application</h2>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <span class="badge badge-green">Active</span>
+                    <span class="badge badge-blue">React Native</span>
+                    <span class="badge badge-gold">Go</span>
+                    <span class="badge badge-purple">PostgreSQL</span>
+                </div>
+                <div class="h-divider"></div>
+            </div>
+            <div style="flex:1; display:flex; gap:28px;">
+                <div class="project-card fade-up-1" style="flex:1.3;">
+                    <div class="project-screenshot" style="height:100%;">
+                        <img src="images/projects/project4.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span> วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project4.jpg</code>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
+                            แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง
+                        </p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
+                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-6 -->
+
+    <!-- Project 5 Detail -->
+    <div class="slide" id="slide-7">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Current Project 3 / 5</div>
+                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">📊 Internal Management Dashboard</h2>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <span class="badge badge-green">Active</span>
+                    <span class="badge badge-blue">React</span>
+                    <span class="badge badge-green">Firebase</span>
+                    <span class="badge badge-gold">TypeScript</span>
+                </div>
+                <div class="h-divider"></div>
+            </div>
+            <div style="flex:1; display:flex; gap:28px;">
+                <div class="project-card fade-up-1" style="flex:1.3;">
+                    <div class="project-screenshot" style="height:100%;">
+                        <img src="images/projects/project5.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span> วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project5.jpg</code>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
+                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-7 -->
+
+    <!-- Project 6 Detail -->
+    <div class="slide" id="slide-8">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Current Project 4 / 5</div>
+                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">⚙️ SAP Integration Microservice API</h2>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <span class="badge badge-green">Active</span>
+                    <span class="badge badge-gold">Golang</span>
+                    <span class="badge badge-purple">SAP BAPI</span>
+                    <span class="badge badge-blue">REST API</span>
+                </div>
+                <div class="h-divider"></div>
+            </div>
+            <div style="flex:1; display:flex; gap:28px;">
+                <div class="project-card fade-up-1" style="flex:1.3;">
+                    <div class="project-screenshot" style="height:100%;">
+                        <img src="images/projects/project6.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span> วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project6.jpg</code>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
+                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-8 -->
+
+    <!-- Project 7 Detail -->
+    <div class="slide" id="slide-9">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:16px;">
+                <div class="section-label">Current Project 5 / 5</div>
+                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">🤖 AI-Powered Internal Assistant Tool</h2>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <span class="badge badge-green">Active</span>
+                    <span class="badge badge-red">AI / LLM</span>
+                    <span class="badge badge-blue">Python</span>
+                    <span class="badge badge-purple">API Integration</span>
+                </div>
+                <div class="h-divider"></div>
+            </div>
+            <div style="flex:1; display:flex; gap:28px;">
+                <div class="project-card fade-up-1" style="flex:1.3;">
+                    <div class="project-screenshot" style="height:100%;">
+                        <img src="images/projects/project7.jpg" alt=""
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="project-screenshot-placeholder">
+                            <span class="icon">📸</span> วางรูป Screenshot<br>
+                            <code style="font-size:10px;">images/projects/project7.jpg</code>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+                    <div class="mindset-box fade-up-2">
+                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
+                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
+                    </div>
+                    <div class="mindset-box fade-up-3">
+                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
+                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
+                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
+                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
+                        </ul>
+                    </div>
+                    <div class="mindset-box fade-up-4">
+                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-9 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 10 — Mindset
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-10">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
+            <div class="fade-up" style="margin-bottom:20px;">
+                <div class="section-label">Chapter 4 · Mindset</div>
+                <h2 style="font-size:38px; font-weight:800; color:#fff; margin:0 0 4px;">
+                    Mindset &amp; Philosophy
+                </h2>
+                <div class="h-divider"></div>
+                <p style="color:rgba(255,255,255,0.45); font-size:13px; margin:4px 0 0;">
+                    มุมมองต่อองค์กร · ทีม · และ AI ที่เข้ามาเปลี่ยนแปลงโลก
+                </p>
+            </div>
+
+            <div style="flex:1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                <!-- Org -->
+                <div class="mindset-box fade-up-1" style="display:flex; flex-direction:column; gap:14px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:44px; margin-bottom:8px;" class="anim-float">🏛️</div>
+                        <div style="font-size:18px; font-weight:800; color:#fbbf24;">ต่อองค์กร</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; letter-spacing:1px;">ORGANIZATION</div>
+                    </div>
+                    <div style="height:1px; background:rgba(255,255,255,0.06);"></div>
+                    <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; list-style:none; margin:0; padding:0; flex:1;">
+                        <li>▶ มองเห็น Business Goal ก่อนเริ่มเขียนโค้ด</li>
+                        <li>▶ ทำงานให้คุ้มค่า ROI ขององค์กร</li>
+                        <li>▶ ขับเคลื่อนด้วย Ownership ไม่ใช่แค่ Employee</li>
+                        <li>▶ พร้อมรับผิดชอบและรายงานผลอย่างโปร่งใส</li>
+                    </ul>
+                    <div style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); border-radius:8px; padding:10px; text-align:center;">
+                        <p style="color:#fbbf24; font-size:12px; font-style:italic; margin:0;">
+                            "เติบโตไปพร้อมองค์กร<br>ไม่ใช่แค่ทำงานให้องค์กร"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Team -->
+                <div class="mindset-box fade-up-2" style="display:flex; flex-direction:column; gap:14px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:44px; margin-bottom:8px;" class="anim-float" style="animation-delay:0.5s;">🤝</div>
+                        <div style="font-size:18px; font-weight:800; color:#60a5fa;">ต่อทีม</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; letter-spacing:1px;">TEAM</div>
+                    </div>
+                    <div style="height:1px; background:rgba(255,255,255,0.06);"></div>
+                    <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; list-style:none; margin:0; padding:0; flex:1;">
+                        <li>▶ สร้าง Psychological Safety ให้ทีม</li>
+                        <li>▶ Mentor ไม่ใช่แค่ Review โค้ด</li>
+                        <li>▶ ลด Bottleneck — เพิ่ม Flow State</li>
+                        <li>▶ Cross-skill ทุกคนให้เข้าใจ Big Picture</li>
+                    </ul>
+                    <div style="background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); border-radius:8px; padding:10px; text-align:center;">
+                        <p style="color:#60a5fa; font-size:12px; font-style:italic; margin:0;">
+                            "ทีมที่แข็งแกร่งสร้างได้<br>ด้วยความไว้วางใจและการเติบโตร่วมกัน"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- AI -->
+                <div class="mindset-box fade-up-3" style="display:flex; flex-direction:column; gap:14px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:44px; margin-bottom:8px;" class="anim-float" style="animation-delay:1s;">🤖</div>
+                        <div style="font-size:18px; font-weight:800; color:#a78bfa;">ต่อ AI</div>
+                        <div style="font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; letter-spacing:1px;">ARTIFICIAL INTELLIGENCE</div>
+                    </div>
+                    <div style="height:1px; background:rgba(255,255,255,0.06);"></div>
+                    <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; list-style:none; margin:0; padding:0; flex:1;">
+                        <li>▶ AI คือ Multiplier ไม่ใช่ Replacement</li>
+                        <li>▶ ใช้ AI ช่วยเพิ่ม Speed &amp; Quality</li>
+                        <li>▶ เรียนรู้ Prompt Engineering อย่างจริงจัง</li>
+                        <li>▶ นำ AI มาใช้ใน Workflow ของทีม</li>
+                    </ul>
+                    <div style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.2); border-radius:8px; padding:10px; text-align:center;">
+                        <p style="color:#a78bfa; font-size:12px; font-style:italic; margin:0;">
+                            "Developer ที่ใช้ AI เป็น<br>จะแซงหน้าคนที่ไม่ปรับตัว 10x"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-10 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 11 — Questions to Management
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-11">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+            <div class="fade-up" style="text-align:center; margin-bottom:32px;">
+                <div class="section-label" style="text-align:center;">Chapter 5 · My Questions</div>
+                <h2 style="font-size:42px; font-weight:800; color:#fff; margin:0 0 4px;" class="text-glow-white">
+                    คำถามของผม<br>ต่อผู้บริหาร
+                </h2>
+                <div style="height:2px; width:100px; background:linear-gradient(90deg,transparent,#f59e0b,transparent); margin:12px auto 0;"></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:16px; max-width:860px; margin:0 auto; width:100%;">
+                <div class="qa-quote fade-up-1">
+                    <div style="position:absolute; top:-14px; left:24px; background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.4); border-radius:20px; padding:4px 12px; font-size:11px; color:#fbbf24; font-weight:700; letter-spacing:1px;">QUESTION 1</div>
+                    <p style="color:rgba(255,255,255,0.9); font-size:17px; line-height:1.7; margin:0;">
+                        ในมุมมองของผู้บริหาร...
+                        <span style="color:#fbbf24; font-weight:700;">ความคาดหวังสูงสุด</span> ที่อยากเห็นจากตัวผมในการ Present วันนี้คืออะไร?
+                    </p>
+                </div>
+
+                <div class="qa-quote fade-up-2">
+                    <div style="position:absolute; top:-14px; left:24px; background:rgba(59,130,246,0.2); border:1px solid rgba(59,130,246,0.4); border-radius:20px; padding:4px 12px; font-size:11px; color:#60a5fa; font-weight:700; letter-spacing:1px;">QUESTION 2</div>
+                    <p style="color:rgba(255,255,255,0.9); font-size:17px; line-height:1.7; margin:0;">
+                        หากองค์กรกำลังมองหา <span style="color:#60a5fa; font-weight:700;">ผู้นำทีมเทคโนโลยี</span> ในอนาคต —
+                        <span style="color:#60a5fa; font-weight:700;">ศักยภาพหรือคุณสมบัติด้านใด</span> ที่ผู้บริหารให้น้ำหนักมากที่สุดครับ?
+                    </p>
+                </div>
+
+                <div class="qa-quote fade-up-3">
+                    <div style="position:absolute; top:-14px; left:24px; background:rgba(139,92,246,0.2); border:1px solid rgba(139,92,246,0.4); border-radius:20px; padding:4px 12px; font-size:11px; color:#a78bfa; font-weight:700; letter-spacing:1px;">QUESTION 3</div>
+                    <p style="color:rgba(255,255,255,0.9); font-size:17px; line-height:1.7; margin:0;">
+                        มีสิ่งที่ผู้บริหาร <span style="color:#a78bfa; font-weight:700;">อยากแนะนำ</span> เพื่อให้ผมเติบโตขึ้นอีก
+                        และเตรียมพร้อมสู่บทบาทที่ใหญ่ขึ้นได้อย่างไรครับ?
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!-- /slide-11 -->
+
+
+    <!-- ══════════════════════════════════════════════
+         SLIDE 12 — Open Q&A
+    ══════════════════════════════════════════════ -->
+    <div class="slide" id="slide-12">
+        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+            <div class="fade-up" style="font-size:80px; margin-bottom:20px;" class="anim-float">🙋</div>
+            <div class="fade-up-1">
+                <h1 style="font-size:60px; font-weight:800; color:#fff; margin:0; line-height:1.1;" class="text-glow-white">
+                    Open Q&amp;A
+                </h1>
+                <div style="height:3px; width:160px; background:linear-gradient(90deg,transparent,#f59e0b,transparent); margin:14px auto;"></div>
+                <p style="font-size:22px; color:#fbbf24; margin:0 0 24px;">
+                    ยินดีตอบทุกคำถามครับ
+                </p>
+            </div>
+            <div class="fade-up-2" style="display:flex; gap:20px; justify-content:center; margin-bottom:32px;">
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px 28px; min-width:180px;">
+                    <div style="font-size:28px; margin-bottom:6px;">💡</div>
+                    <div style="font-size:13px; color:rgba(255,255,255,0.6);">เรื่องโปรเจกต์</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px 28px; min-width:180px;">
+                    <div style="font-size:28px; margin-bottom:6px;">🧠</div>
+                    <div style="font-size:13px; color:rgba(255,255,255,0.6);">เรื่อง Mindset</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px 28px; min-width:180px;">
+                    <div style="font-size:28px; margin-bottom:6px;">🚀</div>
+                    <div style="font-size:13px; color:rgba(255,255,255,0.6);">เรื่อง Career Path</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px 28px; min-width:180px;">
+                    <div style="font-size:28px; margin-bottom:6px;">🤖</div>
+                    <div style="font-size:13px; color:rgba(255,255,255,0.6);">เรื่อง AI &amp; Tech</div>
+                </div>
+            </div>
+            <div class="fade-up-3" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); border-radius:16px; padding:18px 40px; max-width:700px;">
+                <p style="color:rgba(255,255,255,0.7); font-size:16px; font-style:italic; margin:0; line-height:1.6;">
+                    "ขอบคุณที่สละเวลามาฟังครับ<br>
+                    <span style="color:#fbbf24; font-weight:600;">ทุกคำแนะนำล้วนมีคุณค่าสำหรับการเติบโตของผม</span>"
+                </p>
+            </div>
+        </div>
+    </div><!-- /slide-12 -->
+
+
+    <!-- ─── Nav Arrows ─── -->
+    <button class="nav-arrow" id="nav-prev" onclick="changeSlide(-1)">&#8592;</button>
+    <button class="nav-arrow" id="nav-next" onclick="changeSlide(1)">&#8594;</button>
+
+    <!-- ─── Progress Dots ─── -->
+    <div id="progress-bar"></div>
+
+    <!-- ─── Slide Counter ─── -->
+    <div id="slide-counter"></div>
+
+</div><!-- /#stage -->
+
+
+<script>
+    // ── Scale stage to fit viewport ──
+    const stage = document.getElementById('stage');
+    function resizeStage() {
+        const sw = window.innerWidth, sh = window.innerHeight;
+        const scale = Math.min(sw / 1280, sh / 720) * 0.97;
+        stage.style.transform = `scale(${scale})`;
+        stage.style.position = 'relative';
+    }
+    window.addEventListener('resize', resizeStage);
+    resizeStage();
+
+    // ── Slide system ──
+    const TOTAL = 13; // slides 0–12
+    let cur = 0;
+
+    function gotoSlide(n) {
+        const slides = document.querySelectorAll('.slide');
+        slides[cur].classList.remove('active');
+        slides[cur].classList.add('prev');
+        setTimeout(() => slides[cur].classList.remove('prev'), 500);
+        cur = Math.max(0, Math.min(n, TOTAL - 1));
+        slides[cur].classList.add('active');
+        updateNav();
+    }
+
+    function changeSlide(dir) {
+        gotoSlide(cur + dir);
+    }
+
+    // ── Build progress dots ──
+    const bar = document.getElementById('progress-bar');
+    for (let i = 0; i < TOTAL; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        d.title = `Slide ${i + 1}`;
+        d.addEventListener('click', () => gotoSlide(i));
+        bar.appendChild(d);
+    }
+
+    function updateNav() {
+        document.querySelectorAll('.dot').forEach((d, i) => {
+            d.classList.toggle('active', i === cur);
+        });
+        document.getElementById('nav-prev').style.opacity = cur === 0 ? '0.2' : '1';
+        document.getElementById('nav-next').style.opacity = cur === TOTAL - 1 ? '0.2' : '1';
+        document.getElementById('slide-counter').textContent = `${cur + 1} / ${TOTAL}`;
+    }
+    updateNav();
+
+    // ── Keyboard navigation (only when stage/body focused, not inputs) ──
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+            e.preventDefault(); changeSlide(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault(); changeSlide(-1);
+        } else if (e.key === 'Home') {
+            e.preventDefault(); gotoSlide(0);
+        } else if (e.key === 'End') {
+            e.preventDefault(); gotoSlide(TOTAL - 1);
+        }
+    });
+
+    // ── Touch / swipe support ──
+    let touchStartX = 0;
+    stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) changeSlide(dx < 0 ? 1 : -1);
+    });
+</script>
+</body>
+</html>
