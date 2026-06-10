@@ -1,0 +1,322 @@
+# PTM Flow: TransferOut → TransferIn
+
+> **อัปเดตล่าสุด:** 2026-05-29  
+> **Source of truth:** `pkg/api/transferOut/service.go`, `pkg/api/transferIn/service.go`  
+> **TBL flow (IsTBLTransport=1):** `producttransfermanagement-job-service/pkg/api/transfer/service.go`
+
+---
+
+## 1. ภาพรวม (Overview)
+
+**TransferOut (ใบโอนออก)** คือการสร้างคำสั่งโอนสินค้าออกจากคลังต้นทาง  
+**TransferIn (ใบรับโอน)** ถูกสร้างโดยระบบอัตโนมัติเมื่อ TransferOut ได้รับการ **Approve** และจะถูกใช้โดยคลังปลายทางเพื่อยืนยันการรับสินค้า
+
+```mermaid
+flowchart LR
+    A([User]) --> B[Create GoodIssue]
+    B --> C[Add Items]
+    C --> D[Request Approve]
+    D --> E{Approve}
+    E -->|TBL=0: auto-create ทันที\nTBL=1: job-service สร้างทีหลัง| F[ReceiptOrder\nTransferIn - NEW]
+    F --> G([ปลายทาง\nConfirmReceived])
+    G --> H[Send SAP]
+```
+
+---
+
+## 2. Status Flow
+
+### GoodIssue (TransferOut)
+
+```mermaid
+stateDiagram-v2
+    [*] --> NEW : CreateGoodIssue
+    NEW --> WAITING : RequestApprove
+    WAITING --> NEW : Reject
+    WAITING --> APPROVED : Approve
+    APPROVED --> ONPROCESSWMS : Approve\n(whDes=TBS, Self Transport)
+    APPROVED --> CLOSED : ConfirmReceived\n(UpdateStatusTransferOut)
+    ONPROCESSWMS --> CLOSED : ConfirmReceived\n(UpdateStatusTransferOut)
+    NEW --> CANCELLED : Cancel
+    WAITING --> CANCELLED : Cancel
+    APPROVED --> CANCELLED : Cancel
+    ONPROCESSWMS --> CANCELLED : Cancel
+```
+
+### ReceiptOrder (TransferIn)
+
+```mermaid
+stateDiagram-v2
+    [*] --> NEW : TBL=0: Auto-create ตอน Approve\nTBL=1: job-service สร้าง (ทุก 5 นาที)
+    NEW --> CLOSED : ConfirmReceivedAllLine\n(ทุก item CLOSED)
+    NEW --> CANCELLED : Cancel จาก TransferOut
+    CLOSED --> [*]
+```
+
+---
+
+## 3. Main Flow: สร้างจนถึง Approve
+
+```mermaid
+flowchart TD
+    S([Start]) --> C1
+
+    C1["1️⃣ CreateGoodIssueOrder\nPermission: IsAdd\nGIOrder = GT + running number\nStatus: NEW"]
+    C1 --> C2
+
+    C2["2️⃣ CreateGoodIssueOrderItem\nPermission: IsAdd\nValidate: Status=NEW, Qty>0\nItem Status: NEW"]
+    C2 --> C3
+
+    C3["3️⃣ RequestApproveGoodIssueOrderItem\nPermission: IsAdd\nValidate: ต้องมี item ≥ 1\nStatus: NEW → WAITING"]
+    C3 --> C4
+
+    C4{"Approve?"}
+    C4 -->|Reject\nIsApprove| C3_back["Status: WAITING → NEW"]
+    C3_back --> C3
+    C4 -->|Approve\nIsApprove| C5
+
+    C5{"IsTBLTransport?"}
+    C5 -->|"= 0\nSelf Transport"| C5a["5️⃣a ApproveGoodIssueOrder\nAuto-create ReceiptOrder\nReceiptNo = GIOrder\nOrderType = 'Transfer In'\nStatus: NEW"]
+    C5 -->|"= 1\nTBL Transport"| C5b["5️⃣b ApproveGoodIssueOrder\nข้าม CreateReceiptOrder\nส่ง Shipment ไป TOMS\n(job-service สร้าง Receipt ทีหลัง)"]
+
+    C5a --> SelfBranch["ดู Branch A"]
+    C5b --> TBLBranch["ดู Branch B"]
+```
+
+### Step 5: Approve ★ (จุดแยก flow หลัก)
+- **Function:** [`ApproveGoodIssueOrder`](../pkg/api/transferOut/service.go#L1245)
+- **Permission:** `IsApprove`
+
+**แยก path ตาม IsTBLTransport ทันที:**
+
+**IsTBLTransport = 0 (Self Transport):** ระบบ auto-create ReceiptOrder ทันที ผ่าน [`MappingGoodIssueToCUDReceiptOrder`](../pkg/api/transferIn/service.go#L372)
+  - `ReceiptNo = GIOrder` (ใช้เลขเดียวกัน)
+  - `OrderType = "Transfer In"`
+  - ReceiptOrder Status: `NEW`
+
+**IsTBLTransport = 1 (TBL Transport):** **ข้าม** CreateReceiptOrder — ส่ง Shipment ออกไป TOMS แทน ผ่าน [`SendCreateShipmentTOM`](../pkg/api/transferOut/service.go#L1553)
+  - ReceiptOrder จะถูกสร้างทีหลังโดย **job-service** (`TransferService` ทำงานทุก 5 นาที)  
+  - `ReceiptNo = ShipmentId` (จาก TOMS) ≠ GIOrder  
+  - `RefPONO = GIOrder` (เก็บเลข GIOrder ไว้ใน RefPONO เพื่อ reference กลับ)
+
+---
+
+## 4. Branch Flow หลังจาก Approve
+
+### Branch A: IsTBLTransport = 0 (Self Transport)
+
+```mermaid
+flowchart TD
+    A([Approve\nIsTBLTransport=0]) --> R["Create ReceiptOrder + Items\nStatus: NEW"]
+    R --> Q{"whSource\nSeqAddress?"}
+
+    Q -->|TBL หรือ TBS| FTP["UploadFileShipmentTextToServer\nFTP/SFTP\nGI Status: APPROVED"]
+    Q -->|อื่นๆ| Q2{"whDes\nSeqAddress?"}
+
+    Q2 -->|TBS| WMS["UploadFileASNToWMS\nWMS Integration\nGI Status: ONPROCESSWMS"]
+    Q2 -->|อื่นๆ| APR["GI Status: APPROVED"]
+```
+
+### Branch B: IsTBLTransport = 1 (TBL Transport)
+
+```mermaid
+flowchart TD
+    A([Approve\nIsTBLTransport=1]) --> U["GI Status: APPROVED\nบันทึก TB_TOM_TO_ORDERTYPE"]
+    U --> G["goroutine: SendCreateShipmentTOM\nKafka → TOM: OrderCommand=CREATE"]
+    G --> D{"DocumentType\nตาม SeqAddress"}
+    D -->|"src=TBS, des=TBS\nsame WMS WH"| D1["ซื้อขน"]
+    D -->|"src=TBS, des=TBS\ndiff WMS WH"| D2["โอนย้าย"]
+    D -->|"src=TBS, des≠TBS"| D3["ซื้อขน"]
+    D -->|"des=TBS"| D4["ซื้อฝาก"]
+    D -->|"des=OTH"| D5["ซื้อขน"]
+```
+
+> **หมายเหตุ IsTBLTransport=1:** ReceiptOrder **ไม่ถูกสร้างตอน Approve** — [job-service `TransferService`](https://gitlab.thaibevapp.com/ftd/producttranfermanagement/producttransfermanagement-job-service/-/blob/master/pkg/api/transfer/service.go#L73) เป็นผู้สร้าง (ทุก 5 นาที)
+
+---
+
+## 5. TransferIn: รับสินค้า ([`ConfirmReceivedAllLine`](../pkg/api/transferIn/service.go#L540))
+
+```mermaid
+flowchart TD
+    A([ConfirmReceivedAllLine\nPermission: IsApprove]) --> V{"ReceiptOrder\nStatus = NEW?"}
+    V -->|No| ERR([Error])
+    V -->|Yes| UPD["Update Items Status=NEW\nQTYConfirm = QTY\nItem Status → CLOSED"]
+    UPD --> CHK{"ทุก item\nCLOSED?"}
+    CHK -->|No| WAIT([รอ item อื่น])
+    CHK -->|Yes| HCLOSED["ReceiptOrder Status → CLOSED"]
+    HCLOSED --> SAP["goroutine: TransferInSendSap\nSapflag = 1\nUpdateStatusTransferOut\nUpdateQTYTransferOutAllLine\nPOST sap.api-goodrecipt-url"]
+
+    HCLOSED --> MANUAL["Manual Send SAP\nPermission: IsSentSap\nต้อง wait 15 นาที"]
+    MANUAL -.->|retry| SAP
+```
+
+---
+
+## 6. Cancel Flow
+
+```mermaid
+flowchart TD
+    START([CancelGoodIssueOrderItem]) --> ROLE{"Permission\nIsAdd?"}
+    ROLE -->|No| ERR([Permission Denied])
+    ROLE -->|Yes| ST{"GI Status?"}
+
+    ST -->|NEW หรือ WAITING| DIRECT["Cancel GI + Items → CANCELLED\nไม่มี SAP/TOM call"]
+
+    ST -->|APPROVED| WH{"whSource\\nSeqAddress?"}
+
+    WH -->|"≠ TBS"| C2["cancelReceiptByGI\nหา Receipt โดย ReceiptNo=GIOrder"]
+    C2 --> C2a{"มี Receipt?"}
+    C2a -->|No| C2b["Cancel GI → CANCELLED"]
+    C2a -->|Yes| C2c{"Receipt\nมี SAP?"}
+    C2c -->|Yes| C2d["Cancel SAP GoodReceipt\n(api-cancel-goodreceipt-url)"]
+    C2d --> C2e["Cancel GI + Receipt → CANCELLED"]
+    C2c -->|No| C2e
+
+    WH -->|"= TBS"| TBL{"IsTBLTransport?"}
+
+    TBL -->|"= 1\nTBL Transport"| T1{"Shipment\nCOMPLETED?"}
+    T1 -->|No| T1a["Cancel TOM Shipment\n(Kafka: CANCEL)"]
+    T1a --> T1b{"มี Receipt\n(RefPONO=GIOrder)?"}
+    T1b -->|No| T1c["Cancel GI → CANCELLED"]
+    T1b -->|Yes| T1d["Cancel GI + Receipt → CANCELLED"]
+
+    T1 -->|Yes| T2a["Upload attachment\nto MinIO (ถ้ามี)"]
+    T2a --> T2b["Cancel TOM Shipment"]
+    T2b --> T2c["cancelReceiptByGI\n(ดู ≠TBS path)"]
+
+    TBL -->|"= 0\nSelf Transport"| S1{"มี Receipt\n(ReceiptNo=GIOrder)?"}
+    S1 -->|No| S1a["processSelfTransportWMSFlow"]
+    S1 -->|Yes| S2{"Receipt\nมี SAP?"}
+    S2 -->|Yes| S2a["Cancel SAP GoodReceipt"]
+    S2a --> S2b
+    S2 -->|No| S2b["genASNShipmentTransferOut\ngenShipmentTransferIn"]
+    S2b --> S2c["Cancel GI + Receipt → CANCELLED"]
+```
+
+---
+
+## 7. Warehouse Routing Matrix
+
+> ผลลัพธ์ที่เกิดขึ้นเมื่อ **Approve** และ **Cancel** ขึ้นกับ 3 ปัจจัย:  
+> `whSource.SeqAddress` × `whDes.SeqAddress` × `IsTBLTransport`
+
+### ข้อจำกัดสำคัญ
+
+> **IsTBLTransport=1 ใช้ได้เฉพาะเมื่อ Source = TBS หรือ TBL เท่านั้น**  
+> (`ValidateCreateGoodIssue` จะ reject ถ้า Source = STK หรือ OTH)
+
+---
+
+### 7.1 ตาราง Routing
+
+| Source → Dest | IsTBLTransport | ตอน Approve | GI Status | ตอน Cancel (APPROVED) |
+|---|:---:|---|:---:|---|
+| **TBS → TBS** | 0 | FTP/SFTP upload shipment text | `APPROVED` | `handleSelfTransport` → WMS ASN + cancel GI+Receipt |
+| **TBS → TBS** | 1 | TOM Kafka (same WMS: "ซื้อขน" / diff WMS: "โอนย้าย") | `APPROVED` | `handleTBLTransport` → cancel TOM + cancel GI+Receipt |
+| **TBS → STK** | 0 | FTP/SFTP upload shipment text | `APPROVED` | `handleSelfTransport` → WMS ASN + cancel GI+Receipt |
+| **TBS → STK** | 1 | TOM Kafka: "ซื้อขน" | `APPROVED` | `handleTBLTransport` → cancel TOM + cancel GI+Receipt |
+| **STK → TBS** | 0 | WMS ASN upload (`UploadFileASNToWMS`) | `ONPROCESSWMS` | `cancelReceiptByGI` → (cancel SAP ถ้ามี) + cancel GI+Receipt |
+| **STK → TBS** | 1 | ❌ **INVALID** — validation rejects at Create | — | — |
+| **STK → STK** | 0 | ไม่มี integration | `APPROVED` | `cancelReceiptByGI` → (cancel SAP ถ้ามี) + cancel GI+Receipt |
+| **STK → STK** | 1 | ❌ **INVALID** — validation rejects at Create | — | — |
+
+---
+
+### 7.2 Decision Tree: Approve Path
+
+```mermaid
+flowchart TD
+    START([Approve GoodIssue]) --> TBL{"IsTBLTransport?"}
+
+    TBL -->|"= 1\nTBL Transport"| V{"Source\nSeqAddress?"}
+    V -->|"TBS หรือ TBL\n✅ valid"| TOM{"Source = TBS?"}
+    TOM -->|Yes| TOM2{"Des\nSeqAddress?"}
+    TOM2 -->|"TBS\nsame WMS WH"| D1["TOM: ซื้อขน\nGI: APPROVED"]
+    TOM2 -->|"TBS\ndiff WMS WH"| D2["TOM: โอนย้าย\nGI: APPROVED"]
+    TOM2 -->|"STK / OTH"| D3["TOM: ซื้อขน\nGI: APPROVED"]
+    TOM -->|"TBL"| D4["TOM: ตาม des\nGI: APPROVED"]
+    V -->|"STK หรือ OTH\n❌ invalid"| ERR([Error: ไม่สามารถสร้างได้])
+
+    TBL -->|"= 0\nSelf Transport"| SRC{"Source\nSeqAddress?"}
+    SRC -->|"TBS หรือ TBL"| FTP["FTP/SFTP upload\nshipment text\nGI: APPROVED"]
+    SRC -->|"STK / OTH"| DES{"Des\nSeqAddress?"}
+    DES -->|"TBS"| WMS["WMS ASN upload\nGI: ONPROCESSWMS"]
+    DES -->|"STK / OTH"| PLAIN["ไม่มี integration\nGI: APPROVED"]
+```
+
+---
+
+### 7.3 Decision Tree: Cancel Path (เมื่อ Status = APPROVED)
+
+```mermaid
+flowchart TD
+    START([Cancel APPROVED GoodIssue]) --> SRC{"whSource\nSeqAddress?"}
+
+    SRC -->|"≠ TBS\nเช่น STK, OTH"| C1["cancelReceiptByGI"]
+    C1 --> C1a{"มี ReceiptOrder?"}
+    C1a -->|No| C1b["Cancel GI → CANCELLED"]
+    C1a -->|Yes| C1c{"Receipt\nมี SAP?"}
+    C1c -->|Yes| C1d["❶ Cancel SAP GoodReceipt"]
+    C1d --> C1e["Cancel GI + Receipt → CANCELLED"]
+    C1c -->|No| C1e
+
+    SRC -->|"= TBS"| TBL{"IsTBLTransport?"}
+
+    TBL -->|"= 1\nTBL Transport"| SHP{"Shipment\nCOMPLETED?"}
+    SHP -->|No| SHP1["❶ Cancel TOM Shipment\n(Kafka: CANCEL)"]
+    SHP1 --> SHP2{"มี Receipt?"}
+    SHP2 -->|No| SHP3["Cancel GI → CANCELLED"]
+    SHP2 -->|Yes| SHP4["Cancel GI + Receipt → CANCELLED"]
+    SHP -->|Yes| SHP5["❶ Upload attachment → MinIO"]
+    SHP5 --> SHP6["❷ Cancel TOM Shipment"]
+    SHP6 --> SHP7["cancelReceiptByGI\nดู ≠TBS path"]
+
+    TBL -->|"= 0\nSelf Transport"| RC{"มี ReceiptOrder?"}
+    RC -->|No| RC1["processSelfTransportWMSFlow"]
+    RC -->|Yes| RC2{"Receipt\nมี SAP?"}
+    RC2 -->|Yes| RC3["❶ Cancel SAP GoodReceipt"]
+    RC3 --> RC4
+    RC2 -->|No| RC4["❷ genASNShipment\n❸ genShipmentTransferIn"]
+    RC4 --> RC5["Cancel GI + Receipt → CANCELLED"]
+```
+
+---
+
+## 8. External Integrations
+
+| System | เมื่อไหร่ | Config Key |
+|--------|----------|-----------|
+| **SAP** (GoodIssue) | Cancel APPROVED GI ที่ส่ง SAP แล้ว | `sap.api-cancel-goodissue-url` |
+| **SAP** (GoodReceipt) | ConfirmReceived / Cancel receipt ที่ส่ง SAP แล้ว | `sap.api-goodrecipt-url` / `sap.api-cancel-goodreceipt-url` |
+| **TOM** (Shipment) | Approve TBL / Cancel TBL | `tom.api-createShipment-url` (Kafka via producer) |
+| **WMS** (ASN/Shipment) | Approve Self Transport ปลายทาง TBS / Cancel | `UploadFileASNToWMS`, `genASNShipmentTransferOut` |
+| **FTP/SFTP** | Approve Self Transport ต้นทาง TBL/TBS | `UploadFileShipmentTextToServer` |
+| **MinIO** | Cancel attachment สำหรับ TBL shipment ที่ COMPLETED | `minio.*` config |
+
+---
+
+## 9. Key Business Rules
+
+1. **Document Number แตกต่างกันตาม IsTBLTransport:**
+   - `IsTBLTransport = 0`: `ReceiptNo = GIOrder` — เลข document เดียวกัน
+   - `IsTBLTransport = 1`: `ReceiptNo = ShipmentId` (จาก TOMS), `RefPONO = GIOrder` — คนละเลข แต่เชื่อมกันผ่าน RefPONO
+2. **IsTBLTransport** ถูกกำหนดตอนสร้าง GoodIssue — ไม่สามารถเปลี่ยนได้หลัง Approve
+3. **SeqAddress** ของ Warehouse มี 4 ค่า: `TBS`, `TBL`, `STK`, `OTH` — กำหนด routing ของ TOM shipment และ WMS integration
+4. **Cancel attachment** (MinIO) ใช้เฉพาะกรณี TBL transport + shipment COMPLETED แล้ว
+5. **ManualSendSAP** ต้อง wait 15 นาที — ป้องกัน double-send ขณะ auto-send กำลังทำงาน
+6. **ReceiptOrder ไม่ถูกสร้างตอน Approve สำหรับ IsTBLTransport=1** — **job-service** (`TransferService` ทุก 5 นาที) เป็นผู้สร้าง โดย query shipment ที่ `OrderProcess = 'GI'` และ `AsnFlag = 0` จาก `TB_PTM_Shipment`
+
+---
+
+## 10. ไฟล์ที่เกี่ยวข้อง
+
+| ไฟล์ | Function หลัก |
+|------|--------------|
+| [`pkg/api/transferOut/service.go`](../pkg/api/transferOut/service.go) | [`CreateGoodIssueOrder`](../pkg/api/transferOut/service.go#L155) · [`ApproveGoodIssueOrder`](../pkg/api/transferOut/service.go#L1245) · [`CancelGoodIssueOrderItem`](../pkg/api/transferOut/service.go#L722) · [`SendCreateShipmentTOM`](../pkg/api/transferOut/service.go#L1553) |
+| [`pkg/api/transferOut/handler.go`](../pkg/api/transferOut/handler.go) | HTTP endpoints |
+| [`pkg/api/transferIn/service.go`](../pkg/api/transferIn/service.go) | [`ConfirmReceivedAllLine`](../pkg/api/transferIn/service.go#L540) · [`TransferInSendSap`](../pkg/api/transferIn/service.go#L625) · [`ManualSendSAP`](../pkg/api/transferIn/service.go#L671) |
+| [`pkg/api/shipment/store.go`](../pkg/api/shipment/store.go) | ดึง shipment status สำหรับ TBL cancel |
+| [`pkg/shared/enums/orderStatus/`](../pkg/shared/enums/orderStatus/) | Status constants (NEW, WAITING, APPROVED, CANCELLED, CLOSED) |
+| [`pkg/shared/enums/warehouse/`](../pkg/shared/enums/warehouse/) | SeqAddress constants (TBS, TBL, STK, OTH) |
+| [`pkg/api/transferOut/CancelGoodIssueOrderItem_flow.md`](../pkg/api/transferOut/CancelGoodIssueOrderItem_flow.md) | SQL test data สำหรับ cancel flow |

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -339,7 +339,7 @@
                             <tr><td>Role</td><td>Senior Application Developer</td></tr>
                             <tr><td>Division</td><td>Solution Development</td></tr>
                             <tr><td>Emp No.</td><td>10300176</td></tr>
-                            <tr><td>Started</td><td>14/09/2020 (~5.7 ปี)</td></tr>
+                            <tr><td>Started</td><td>14/09/2020</td></tr>
                             <tr><td>Birth Year</td><td>1990</td></tr>
                         </table>
                     </div>
@@ -531,75 +531,128 @@
 
 
     <!-- ══════════════════════════════════════════════
-         SLIDE 2 — Past Project 1
+         SLIDE 2 — Past Project 1  (MPT)
     ══════════════════════════════════════════════ -->
     <div class="slide" id="slide-2">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
+        <div style="padding:22px 36px 18px; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;">
+
+            <!-- Header -->
+            <div class="fade-up" style="margin-bottom:10px;">
                 <div class="section-label">Chapter 2 · Notable Past Projects — 1/2</div>
-                <h2 style="font-size:36px; font-weight:800; color:#fff; margin:0 0 4px;">
-                    🏢 Warehouse Pallet Scanning System
-                </h2>
-                <div style="display:flex; gap:8px; margin-top:8px;">
-                    <span class="badge badge-gold">Past Project</span>
-                    <span class="badge badge-purple">SAP Integration</span>
-                    <span class="badge badge-blue">Mobile App</span>
+                <div style="display:flex; align-items:baseline; gap:12px;">
+                    <h2 style="font-size:26px; font-weight:800; color:#fff; margin:0;">
+                        📦 MPT — Mobile Pallet Traceability
+                    </h2>
+                    <div style="font-size:11px; color:rgba(255,255,255,0.35);">ThaiBev Group · Oishi</div>
                 </div>
-                <div class="h-divider" style="margin-top:10px;"></div>
+                <div style="display:flex; gap:6px; margin-top:6px;">
+                    <span class="badge badge-gold">Past Project</span>
+                    <span class="badge badge-purple">SAP BAPI</span>
+                    <span class="badge badge-blue">Xamarin</span>
+                    <span class="badge badge-green">Handheld / Barcode</span>
+                    <span class="badge badge-red">Offline-First</span>
+                </div>
+                <div class="h-divider" style="margin-top:8px; margin-bottom:0;"></div>
             </div>
 
-            <div style="flex:1; display:flex; gap:28px;">
-                <!-- Left: Screenshot -->
-                <div class="project-card fade-up-1" style="flex:1.2; display:flex; flex-direction:column;">
-                    <div class="project-screenshot" style="flex:1; aspect-ratio:unset;">
-                        <img src="images/projects/project1.jpg" alt="Warehouse System"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project1.jpg</code>
+            <!-- Body: 3 columns, fixed height budget -->
+            <div style="flex:1; display:flex; gap:12px; min-height:0; overflow:hidden;">
+
+                <!-- Col A: Web UI + Flow + 2 extra mobile -->
+                <div style="display:flex; flex-direction:column; gap:8px; width:240px; flex-shrink:0; min-height:0;">
+                    <!-- Web UI -->
+                    <div class="project-card fade-up-1" style="flex-shrink:0; overflow:hidden; position:relative; height:140px;">
+                        <img src="images/mpt/image2.png" alt="MPT Web"
+                             style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                        <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(6,13,26,0.9),transparent); padding:4px 8px;">
+                            <span style="font-size:9px; color:rgba(255,255,255,0.6);">🖥️ Web — AssignJob List</span>
                         </div>
                     </div>
-                    <div style="padding:14px 16px;">
-                        <div style="font-size:12px; color:rgba(255,255,255,0.4);">ตัวอย่าง UI ระบบ Pallet Scanning</div>
+                    <!-- Extra mobile thumbnails 2×2 -->
+                    <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px; min-height:0;">
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile4.png" alt="Download/Upload" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile5.png" alt="Sync Detail" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile7.png" alt="Reservation" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile8.png" alt="Scan Pallet" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right: Details -->
-                <div style="flex:1; display:flex; flex-direction:column; gap:14px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:8px;">🎯 โจทย์และความท้าทาย</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
-                            ระบบเดิมใช้ <strong style="color:#f87171;">Ext JS (Web)</strong> และ <strong style="color:#f87171;">Xamarin (Mobile)</strong>
-                            เป็นเทคโนโลยีเก่า หาคนสานงานต่อยาก โหลดช้า บำรุงรักษาลำบาก
+                <!-- Col B: Mobile screenshots (1 column) -->
+                <div class="fade-up-3" style="display:flex; flex-direction:column; gap:6px; width:160px; flex-shrink:0; min-height:0;">
+                    <div style="font-size:9px; color:rgba(255,255,255,0.35); letter-spacing:2px; text-transform:uppercase; text-align:center; flex-shrink:0;">📱 Mobile App — Handheld</div>
+                    <div style="flex:1; display:grid; grid-template-columns:1fr; grid-template-rows:1fr 1fr; gap:6px; min-height:0;">
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile1.png" alt="Login" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
+                        <div style="border-radius:7px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:#0a1628; position:relative;">
+                            <img src="images/mpt/mobile2.png" alt="Menu" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                        </div>
+                    </div>
+                    <div style="font-size:9px; color:rgba(255,255,255,0.25); text-align:center; flex-shrink:0;">Login · Menu</div>
+                </div>
+
+                <!-- Col C: Details (fills remaining space) -->
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; min-height:0;">
+
+                    <!-- ระบบทำอะไร — full width -->
+                    <div class="mindset-box fade-up-2" style="padding:8px 12px; flex-shrink:0;">
+                        <div style="color:#fbbf24; font-size:11px; font-weight:700; margin-bottom:4px;">🎯 ระบบทำอะไร</div>
+                        <p style="color:rgba(255,255,255,0.78); font-size:10.5px; line-height:1.6; margin:0;">
+                            ดึง Order จาก <strong style="color:#f59e0b;">SAP</strong> ผ่าน <strong style="color:#f59e0b;">BAPI Call</strong>
+                            รับทั้ง <em>Reservation, DO, Pallet</em>
+                            เข้าระบบ Web แล้ว <strong style="color:#60a5fa;">Download ลง Handheld</strong>
+                            ให้พนักงานสแกนพาเลทตาม Order ใน Warehouse
                         </p>
                     </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:8px;">✅ สิ่งที่ทำ</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:14px; line-height:2; margin:0; padding:0; list-style:none;">
-                            <li>▶ ออกแบบ Architecture ใหม่ด้วย <strong style="color:#60a5fa;">React Native</strong></li>
-                            <li>▶ เชื่อมต่อ SAP BAPI ผ่าน <strong style="color:#60a5fa;">Golang Backend</strong></li>
-                            <li>▶ ลด Response Time จาก ~3s → <strong style="color:#34d399;">&lt;0.1s</strong></li>
-                            <li>▶ รองรับ Offline Mode สำหรับพื้นที่ Signal ไม่ดี</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:8px;">📈 ผลลัพธ์ที่ได้</div>
-                        <div style="display:flex; gap:16px;">
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#34d399;">97%</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">ลด Error Rate</div>
+
+                    <!-- สิ่งที่พัฒนาเพิ่มเติม — full width, fit content -->
+                    <div class="mindset-box fade-up-3" style="padding:7px 10px; flex-shrink:0;">
+                        <div style="color:#34d399; font-size:10.5px; font-weight:700; margin-bottom:4px;">✅ สิ่งที่พัฒนาเพิ่มเติม</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px;">
+                            <div style="padding:3px 7px; background:rgba(96,165,250,0.07); border-radius:4px; border-left:2px solid #60a5fa;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;"><strong style="color:#60a5fa;">รับช่วงต่อ</strong> พัฒนาต่อเนื่องจาก Xamarin เดิม เพิ่มฟีเจอร์ใหม่</span>
                             </div>
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#60a5fa;">30x</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">เร็วขึ้น</div>
+                            <div style="padding:3px 7px; background:rgba(245,158,11,0.07); border-radius:4px; border-left:2px solid #f59e0b;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;">เพิ่ม Order Type — <strong style="color:#f59e0b;">Reservation, DO, Pallet</strong></span>
                             </div>
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#fbbf24;">✓</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">ทีมขยาย Dev ได้ง่าย</div>
+                            <div style="padding:3px 7px; background:rgba(52,211,153,0.07); border-radius:4px; border-left:2px solid #34d399;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;">BAPI Integration <strong style="color:#34d399;">รองรับหลาย Plant</strong></span>
+                            </div>
+                            <div style="padding:3px 7px; background:rgba(139,92,246,0.07); border-radius:4px; border-left:2px solid #a78bfa;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;"><strong style="color:#a78bfa;">Offline Sync</strong> — Download/Upload แบบ Batch</span>
+                            </div>
+                            <div style="padding:3px 7px; background:rgba(244,114,182,0.07); border-radius:4px; border-left:2px solid #f472b6;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;">UI/UX <strong style="color:#f472b6;">Handheld สำหรับพนักงาน Forklift</strong></span>
+                            </div>
+                            <div style="padding:3px 7px; background:rgba(56,189,248,0.07); border-radius:4px; border-left:2px solid #38bdf8;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;"><strong style="color:#38bdf8;">Auto-create Transfer In</strong> ทันทีหลัง Approve — ตัด Manual Step</span>
+                            </div>
+                            <div style="padding:3px 7px; background:rgba(251,146,60,0.07); border-radius:4px; border-left:2px solid #fb923c;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;">Forklift สแกน Pallet → Upload → <strong style="color:#fb923c;">ระบบส่ง SAP GoodReceipt อัตโนมัติ</strong></span>
+                            </div>
+                            <div style="padding:3px 7px; background:rgba(163,230,53,0.07); border-radius:4px; border-left:2px solid #a3e635;">
+                                <span style="color:rgba(255,255,255,0.8); font-size:10px;"><strong style="color:#a3e635;">ลด Lead Time</strong> — Checker Staff ยืนยันผ่าน Handheld ไม่ต้องใช้เอกสาร</span>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Flow diagram เต็มพื้นที่ด้านล่าง -->
+                    <div class="project-card fade-up-4" style="flex:1; overflow:hidden; position:relative; min-height:0;">
+                        <img src="images/mpt/image.png" alt="System Flow"
+                             style="width:100%; height:100%; object-fit:contain; object-position:center; display:block;">
+                        <div style="position:absolute; top:5px; left:6px;">
+                            <span style="font-size:9px; color:rgba(255,255,255,0.55); background:rgba(6,13,26,0.72); padding:2px 5px; border-radius:3px; letter-spacing:0.5px;">Flow · Before → After</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -607,75 +660,169 @@
 
 
     <!-- ══════════════════════════════════════════════
-         SLIDE 3 — Past Project 2
+         SLIDE 3 — Past Project 2  (PCMS)
     ══════════════════════════════════════════════ -->
     <div class="slide" id="slide-3">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
+        <div style="padding:20px 36px 16px; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;">
+
+            <!-- Header -->
+            <div class="fade-up" style="margin-bottom:10px;">
                 <div class="section-label">Chapter 2 · Notable Past Projects — 2/2</div>
-                <h2 style="font-size:36px; font-weight:800; color:#fff; margin:0 0 4px;">
-                    🗺️ Logistics Route Optimization System
-                </h2>
-                <div style="display:flex; gap:8px; margin-top:8px;">
-                    <span class="badge badge-gold">Past Project</span>
-                    <span class="badge badge-purple">Algorithm</span>
-                    <span class="badge badge-blue">Backend Heavy</span>
+                <div style="display:flex; align-items:baseline; gap:12px;">
+                    <h2 style="font-size:25px; font-weight:800; color:#fff; margin:0;">
+                        🏭 PCMS — Production Control Management System
+                    </h2>
+                    <div style="font-size:11px; color:rgba(255,255,255,0.35);">Oishi · ThaiBev · Plant UHT</div>
                 </div>
-                <div class="h-divider" style="margin-top:10px;"></div>
+                <div style="display:flex; gap:6px; margin-top:6px;">
+                    <span class="badge badge-gold">Solo Project</span>
+                    <span class="badge badge-blue">React</span>
+                    <span class="badge badge-red">React Native</span>
+                    <span class="badge badge-purple">C# Backend</span>
+                    <span class="badge badge-green">Material UI</span>
+                    <span class="badge badge-gold">Recipe / Blending</span>
+                </div>
+                <div class="h-divider" style="margin-top:8px; margin-bottom:0;"></div>
             </div>
 
-            <div style="flex:1; display:flex; gap:28px;">
-                <!-- Left: Screenshot -->
-                <div class="project-card fade-up-1" style="flex:1.2; display:flex; flex-direction:column;">
-                    <div class="project-screenshot" style="flex:1; aspect-ratio:unset;">
-                        <img src="images/projects/project2.jpg" alt="Routing System"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project2.jpg</code>
+            <!-- Body: 3 columns -->
+            <div style="flex:1; display:flex; gap:12px; min-height:0; overflow:hidden;">
+
+                <!-- ── COL A: Process flow + Web UI (220px) ── -->
+                <div style="width:218px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; min-height:0;">
+
+                    <!-- Process Illustration from PDF -->
+                    <div class="project-card fade-up-1" style="flex-shrink:0; height:116px; overflow:hidden; position:relative;">
+                        <img src="images/pcms/page_2.png" alt="Process Illustration"
+                             style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+                        <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(6,13,26,0.9),transparent); padding:4px 8px;">
+                            <span style="font-size:9px; color:rgba(255,255,255,0.7);">⚙️ Automatic Blending & Aseptic Process</span>
                         </div>
                     </div>
-                    <div style="padding:14px 16px;">
-                        <div style="font-size:12px; color:rgba(255,255,255,0.4);">ตัวอย่าง UI ระบบ Route Optimization</div>
+
+                    <!-- Web Dashboard -->
+                    <div class="project-card fade-up-2" style="flex-shrink:0; height:116px; overflow:hidden; position:relative;">
+                        <img src="images/pcms/Screenshot 2026-06-10 205229.png" alt="PCMS Web"
+                             style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                        <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(6,13,26,0.9),transparent); padding:4px 8px;">
+                            <span style="font-size:9px; color:rgba(255,255,255,0.7);">🖥️ PCMS Web — Production Control</span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile screenshot single -->
+                    <div class="project-card fade-up-3" style="flex:1; overflow:hidden; position:relative; min-height:0;">
+                        <img src="images/pcms/image2.png" alt="Mobile Screen"
+                             style="width:100%; height:100%; object-fit:contain; display:block; background:#0a1628;">
                     </div>
                 </div>
 
-                <!-- Right: Details -->
-                <div style="flex:1; display:flex; flex-direction:column; gap:14px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:8px;">🎯 โจทย์และความท้าทาย</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
-                            ระบบคำนวณเส้นทางเดิมติดปัญหาเมื่อจุดส่งของเพิ่มขึ้น ได้ผลลัพธ์ที่ไม่ดีที่สุด
-                            ทำให้สิ้นเปลืองน้ำมันและต้นทุนโลจิสติกส์
-                        </p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:8px;">✅ สิ่งที่ทำ</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:14px; line-height:2; margin:0; padding:0; list-style:none;">
-                            <li>▶ วิจัยและนำ <strong style="color:#a78bfa;">Quantum-Inspired Algorithm</strong> มาปรับใช้</li>
-                            <li>▶ สร้าง Backend API สำหรับ Real-time Route Calculation</li>
-                            <li>▶ ทำ Visual Dashboard แสดง Route บน Map</li>
-                            <li>▶ Integrate กับระบบ TMS ที่มีอยู่เดิม</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:8px;">📈 ผลลัพธ์ที่ได้</div>
-                        <div style="display:flex; gap:16px;">
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#34d399;">-18%</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">Logistics Cost</div>
+                <!-- ── COL B: Mobile thumbnails grid (240px) ── -->
+                <div class="fade-up-3" style="width:240px; flex-shrink:0; display:flex; flex-direction:column; gap:6px; min-height:0;">
+                    <div style="font-size:9px; color:rgba(255,255,255,0.35); letter-spacing:2px; text-transform:uppercase; text-align:center; flex-shrink:0;">📱 Mobile App — Step-by-Step Mixing</div>
+
+                    <!-- 2×3 grid -->
+                    <div style="flex:1; position:relative; min-height:0;">
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; gap:5px;">
+                            <!-- Row 1 -->
+                            <div style="flex:1; display:flex; gap:5px;">
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/image.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/image3.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
                             </div>
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#60a5fa;">400x</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">คำนวณเร็วขึ้น</div>
+                            <!-- Row 2 -->
+                            <div style="flex:1; display:flex; gap:5px;">
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/image4.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/image5.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
                             </div>
-                            <div style="text-align:center; flex:1;">
-                                <div style="font-size:28px; font-weight:800; color:#fbbf24;">Optimal</div>
-                                <div style="font-size:11px; color:rgba(255,255,255,0.4);">Route Quality</div>
+                            <!-- Row 3 -->
+                            <div style="flex:1; display:flex; gap:5px;">
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/image6.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
+                                <div style="flex:1; border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:#0a1628; position:relative;">
+                                    <img src="images/pcms/7.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div style="font-size:9px; color:rgba(255,255,255,0.22); text-align:center; flex-shrink:0;">7 screens · Recipe → Select → Mix → Confirm</div>
+                </div>
+
+                <!-- ── COL C: Details (fill) ── -->
+                <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:8px; min-height:0;">
+
+                    <!-- Solo challenge banner -->
+                    <div style="flex-shrink:0; background:linear-gradient(135deg,rgba(245,158,11,0.13),rgba(239,68,68,0.07)); border:1px solid rgba(245,158,11,0.28); border-radius:8px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:22px; flex-shrink:0;">⚡</span>
+                        <div>
+                            <div style="color:#fbbf24; font-size:11px; font-weight:700; margin-bottom:2px;">Solo Developer — ไม่มี PO ไม่มี Agile</div>
+                            <div style="color:rgba(255,255,255,0.68); font-size:10.5px; line-height:1.55;">
+                                Meeting User โดยตรง → วิเคราะห์ Requirement → ออกแบบ → พัฒนา <strong style="color:#fff;">Web + Mobile คนเดียว</strong> ตั้งแต่ต้นจนจบ
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What it does: 2-col grid -->
+                    <div class="mindset-box fade-up-2" style="flex-shrink:0; padding:9px 12px;">
+                        <div style="color:#60a5fa; font-size:11px; font-weight:700; margin-bottom:6px;">🎯 ฟีเจอร์หลักของระบบ</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px 8px;">
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(245,158,11,0.07); border-radius:5px; border-left:2px solid #f59e0b;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;">เปิดแผนผลิต + เลือก <strong style="color:#fbbf24;">Recipe</strong></span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(96,165,250,0.07); border-radius:5px; border-left:2px solid #60a5fa;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;">ผสมสูตรทีละ Step บน <strong style="color:#60a5fa;">Handheld</strong></span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(239,68,68,0.07); border-radius:5px; border-left:2px solid #f87171;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;"><strong style="color:#f87171;">Lock Step</strong> — ข้ามขั้นตอนไม่ได้</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(52,211,153,0.07); border-radius:5px; border-left:2px solid #34d399;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;">Confirm ตัด <strong style="color:#34d399;">Stock</strong> หลังผสมเสร็จ</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(139,92,246,0.07); border-radius:5px; border-left:2px solid #a78bfa;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;">รับของเข้า + <strong style="color:#a78bfa;">ตรวจ Stock</strong></span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:5px; padding:4px 7px; background:rgba(244,114,182,0.07); border-radius:5px; border-left:2px solid #f472b6;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px; line-height:1.5;">ออก <strong style="color:#f472b6;">Report</strong> + พิมพ์ Barcode Sticker</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What I did -->
+                    <div class="mindset-box fade-up-3" style="flex:1; min-height:0; padding:9px 12px; overflow:hidden; display:flex; flex-direction:column; gap:5px;">
+                        <div style="color:#34d399; font-size:11px; font-weight:700; flex-shrink:0;">✅ สิ่งที่พัฒนาเพิ่มเติม</div>
+                        <div style="display:flex; flex-direction:column; gap:5px;">
+                            <div style="padding:5px 8px; background:rgba(96,165,250,0.07); border-radius:5px; border-left:2px solid #60a5fa;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px;">Meeting User → รับ Requirement → วิเคราะห์และออกแบบระบบทั้งหมดด้วยตัวเอง</span>
+                            </div>
+                            <div style="padding:5px 8px; background:rgba(245,158,11,0.07); border-radius:5px; border-left:2px solid #f59e0b;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px;">พัฒนา <strong style="color:#fbbf24;">Web (React + C#)</strong> ครบทุก Module ตั้งแต่ Planning ถึง Report</span>
+                            </div>
+                            <div style="padding:5px 8px; background:rgba(239,68,68,0.07); border-radius:5px; border-left:2px solid #f87171;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px;">พัฒนา <strong style="color:#f87171;">Mobile App (React Native + Material UI)</strong> สำหรับ Handheld ใน Plant</span>
+                            </div>
+                            <div style="padding:5px 8px; background:rgba(139,92,246,0.07); border-radius:5px; border-left:2px solid #a78bfa;">
+                                <span style="color:rgba(255,255,255,0.82); font-size:10.5px;">ออกแบบ <strong style="color:#a78bfa;">Recipe Engine</strong> + Step Lock ป้องกันข้ามขั้นตอน</span>
+                            </div>
+                        </div>
+                        <!-- screenshots ใต้สิ่งที่ผมทำ -->
+                        <div style="flex:1; display:flex; gap:6px; min-height:0;">
+                            <div style="flex:1; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.07); position:relative;">
+                                <img src="images/pcms/Screenshot 2026-06-10 205346.png" alt="PCMS Screenshot" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain; display:block;">
+                            </div>
+                            <div style="flex:1; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.07); background:#0a1628; position:relative;">
+                                <img src="images/pcms/page_3.png" alt="Page 3" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain; display:block;">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -683,358 +830,238 @@
 
 
     <!-- ══════════════════════════════════════════════
-         SLIDE 4 — Current Projects Overview
+         SLIDE 4 — Current Projects (PTM · LWM · CROSSDOCK · MRP · SAP DATA)
     ══════════════════════════════════════════════ -->
     <div class="slide" id="slide-4">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:20px;">
+        <div style="padding:18px 36px 14px; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;">
+
+            <!-- Header -->
+            <div class="fade-up" style="margin-bottom:8px; flex-shrink:0;">
                 <div class="section-label">Chapter 3 · Current Projects</div>
-                <h2 style="font-size:38px; font-weight:800; color:#fff; margin:0 0 4px;">
-                    โปรเจกต์ที่กำลังดำเนินการ <span style="color:#34d399;">🟢 Active</span>
-                </h2>
-                <div class="h-divider"></div>
-                <p style="color:rgba(255,255,255,0.5); font-size:14px; margin:4px 0 0;">5 โปรเจกต์ที่กำลังขับเคลื่อนอยู่ในปัจจุบัน</p>
+                <div style="display:flex; align-items:baseline; gap:14px;">
+                    <h2 style="font-size:23px; font-weight:800; color:#fff; margin:0;">โปรเจกต์ที่กำลังดำเนินการ</h2>
+                    <span style="color:#34d399; font-size:12px; font-weight:600;">🟢 5 Active · ThaiBev / HORECA Group</span>
+                </div>
+                <div class="h-divider" style="margin-top:5px; margin-bottom:0; width:60px;"></div>
             </div>
 
-            <div style="flex:1; display:grid; grid-template-columns: repeat(5,1fr); gap:12px;">
-                <!-- Project A -->
-                <div class="project-card fade-up-1" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(5)">
-                    <div class="project-screenshot">
-                        <img src="images/projects/project3.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            <code style="font-size:9px;">project3.jpg</code>
+            <!-- 3-row layout -->
+            <div style="flex:1; display:flex; flex-direction:column; gap:7px; min-height:0;">
+
+
+                <!-- ══ ROW 1: CROSSDOCK — full width horizontal ══ -->
+                <div class="project-card fade-up-1" style="flex:1; display:flex; flex-direction:row; overflow:hidden; min-height:0;">
+
+                    <!-- Images: process diagram + mobile menu + screens overview -->
+                    <div style="width:66%; flex-shrink:0; display:flex; gap:2px; overflow:hidden; background:#070e1c;">
+                        <!-- Process diagram (landscape) -->
+                        <div style="flex:5; overflow:hidden; position:relative;">
+                            <img src="images/crossdock/Screenshot 2026-06-10 231620.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:center 35%; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.85), transparent); padding:5px 10px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.7);">📊 Cross Docking Process Flow</span>
+                            </div>
+                        </div>
+                        <!-- Mobile menu (portrait) -->
+                        <div style="flex:2; overflow:hidden; position:relative;">
+                            <img src="images/crossdock/Screenshot 2026-06-10 231651.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block;">
+                        </div>
+                        <!-- Screens overview -->
+                        <div style="flex:5; overflow:hidden; position:relative;">
+                            <img src="images/crossdock/Screenshot 2026-06-10 231719.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.85), transparent); padding:5px 10px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.7);">📱 Mobile App — All Screens</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:12px;">
-                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
-                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">E-Commerce Platform</div>
-                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Next.js · TypeScript</div>
-                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
-                    </div>
-                </div>
-                <!-- Project B -->
-                <div class="project-card fade-up-2" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(6)">
-                    <div class="project-screenshot">
-                        <img src="images/projects/project4.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            <code style="font-size:9px;">project4.jpg</code>
+
+                    <!-- Info -->
+                    <div style="flex:1; padding:14px 18px; display:flex; flex-direction:column; justify-content:center; gap:8px; min-width:0; overflow:hidden;">
+                        <div>
+                            <div style="font-size:20px; font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:2px;">CROSSDOCK</div>
+                            <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:7px;">Cross Docking Management System · ThaiBev Hub</div>
+                            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                                <span class="badge badge-green">Active</span>
+                                <span class="badge badge-red">React Native</span>
+                                <span class="badge badge-blue">Go</span>
+                                <span class="badge badge-purple">Web</span>
+                            </div>
+                        </div>
+                        <div style="height:1px; background:rgba(255,255,255,0.06);"></div>
+                        <div style="display:flex; flex-direction:column; gap:5px;">
+                            <div style="padding:5px 9px; background:rgba(245,158,11,0.07); border-radius:5px; border-left:2px solid #f59e0b;">
+                                <span style="font-size:11px; color:rgba(255,255,255,0.85);">รับสินค้า → คัดแยก (Sorting) → โหลดส่งออก ไม่เก็บ Stock</span>
+                            </div>
+                            <div style="padding:5px 9px; background:rgba(96,165,250,0.07); border-radius:5px; border-left:2px solid #60a5fa;">
+                                <span style="font-size:11px; color:rgba(255,255,255,0.85);">Hub Management, Dock Area Assignment, CIO Tracking</span>
+                            </div>
+                            <div style="padding:5px 9px; background:rgba(52,211,153,0.07); border-radius:5px; border-left:2px solid #34d399;">
+                                <span style="font-size:11px; color:rgba(255,255,255,0.85);">Mobile App สำหรับ Hub Staff · รองรับ Multi-Hub</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:12px;">
-                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
-                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">HR Management App</div>
-                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">React Native · Go</div>
-                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
-                    </div>
                 </div>
-                <!-- Project C -->
-                <div class="project-card fade-up-3" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(7)">
-                    <div class="project-screenshot">
-                        <img src="images/projects/project5.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            <code style="font-size:9px;">project5.jpg</code>
+
+                <!-- ══ ROW 2: PTM | LWM ══ -->
+                <div style="flex:1; display:flex; gap:7px; min-height:0;">
+
+                    <!-- PTM -->
+                    <div class="project-card fade-up-2" style="flex:1; display:flex; flex-direction:row; overflow:hidden; min-height:0;">
+                        <!-- Screenshot -->
+                        <div style="width:58%; flex-shrink:0; overflow:hidden; position:relative;">
+                            <img src="images/ptm/Screenshot 2026-06-10 224407.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.9), transparent 60%); padding:5px 8px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.65);">🖥️ Web — Transfer Management</span>
+                            </div>
+                        </div>
+                        <!-- Info -->
+                        <div style="flex:1; padding:11px 14px; display:flex; flex-direction:column; justify-content:center; gap:6px; min-width:0; overflow:hidden;">
+                            <div>
+                                <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:0.5px; margin-bottom:2px;">PTM</div>
+                                <div style="font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:5px;">Product Transfer Management</div>
+                                <div style="display:flex; flex-wrap:wrap; gap:3px;">
+                                    <span class="badge badge-green" style="font-size:9px;">Active</span>
+                                    <span class="badge badge-gold" style="font-size:9px;">SAP BAPI</span>
+                                    <span class="badge badge-blue" style="font-size:9px;">Golang</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                                <div style="padding:4px 8px; background:rgba(245,158,11,0.07); border-radius:4px; border-left:2px solid #f59e0b;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">โอนสินค้าระหว่างคลัง Transfer Out / In</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(96,165,250,0.07); border-radius:4px; border-left:2px solid #60a5fa;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Integrate SAP · Plus Transport · WMS</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(52,211,153,0.07); border-radius:4px; border-left:2px solid #34d399;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Self Transport & TBL Flow แยก path</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:12px;">
-                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
-                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">Internal Dashboard</div>
-                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">React · Firebase</div>
-                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
-                    </div>
-                </div>
-                <!-- Project D -->
-                <div class="project-card fade-up-4" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(8)">
-                    <div class="project-screenshot">
-                        <img src="images/projects/project6.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            <code style="font-size:9px;">project6.jpg</code>
+
+                    <!-- LWM -->
+                    <div class="project-card fade-up-3" style="flex:1; display:flex; flex-direction:row; overflow:hidden; min-height:0;">
+                        <!-- Screenshot: web only -->
+                        <div style="width:58%; flex-shrink:0; overflow:hidden; position:relative;">
+                            <img src="images/lwm/Screenshot 2026-06-10 225438.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.9), transparent 60%); padding:4px 8px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.65);">🖥️ Web — LWM Dashboard</span>
+                            </div>
+                        </div>
+                        <!-- Info -->
+                        <div style="flex:1; padding:11px 14px; display:flex; flex-direction:column; justify-content:center; gap:6px; min-width:0; overflow:hidden;">
+                            <div>
+                                <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:0.5px; margin-bottom:2px;">LWM</div>
+                                <div style="font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:5px;">Logistics Warehouse Management</div>
+                                <div style="display:flex; flex-wrap:wrap; gap:3px;">
+                                    <span class="badge badge-green" style="font-size:9px;">Active</span>
+                                    <span class="badge badge-purple" style="font-size:9px;">WMS</span>
+                                    <span class="badge badge-blue" style="font-size:9px;">React</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                                <div style="padding:4px 8px; background:rgba(245,158,11,0.07); border-radius:4px; border-left:2px solid #f59e0b;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Receiving · Picking · Shipping</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(96,165,250,0.07); border-radius:4px; border-left:2px solid #60a5fa;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Wave Process, Order Planning</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(52,211,153,0.07); border-radius:4px; border-left:2px solid #34d399;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Multi-Warehouse & Handheld Support</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:12px;">
-                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
-                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">SAP Integration API</div>
-                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Golang · SAP BAPI</div>
-                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
-                    </div>
+
                 </div>
-                <!-- Project E -->
-                <div class="project-card fade-up-5" style="display:flex; flex-direction:column; cursor:pointer;" onclick="gotoSlide(9)">
-                    <div class="project-screenshot">
-                        <img src="images/projects/project7.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span>
-                            <code style="font-size:9px;">project7.jpg</code>
+
+                <!-- ══ ROW 3: MRP | SAP DATA ══ -->
+                <div style="flex:1; display:flex; gap:7px; min-height:0;">
+
+                    <!-- MRP -->
+                    <div class="project-card fade-up-4" style="flex:1; display:flex; flex-direction:row; overflow:hidden; min-height:0;">
+                        <div style="width:58%; flex-shrink:0; overflow:hidden; position:relative;">
+                            <img src="images/mrp/Screenshot 2026-06-10 230628.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.9), transparent 60%); padding:5px 8px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.65);">🖥️ Import Receipt Plan Daily</span>
+                            </div>
+                        </div>
+                        <div style="flex:1; padding:11px 14px; display:flex; flex-direction:column; justify-content:center; gap:6px; min-width:0; overflow:hidden;">
+                            <div>
+                                <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:0.5px; margin-bottom:2px;">MRP</div>
+                                <div style="font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:5px;">Material Requirements Planning</div>
+                                <div style="display:flex; flex-wrap:wrap; gap:3px;">
+                                    <span class="badge badge-green" style="font-size:9px;">Active</span>
+                                    <span class="badge badge-gold" style="font-size:9px;">SAP</span>
+                                    <span class="badge badge-blue" style="font-size:9px;">Golang</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                                <div style="padding:4px 8px; background:rgba(245,158,11,0.07); border-radius:4px; border-left:2px solid #f59e0b;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Import แผนผลิต/รับของ Daily & Monthly</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(96,165,250,0.07); border-radius:4px; border-left:2px solid #60a5fa;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Master BOM & Master Packaging</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(52,211,153,0.07); border-radius:4px; border-left:2px solid #34d399;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">วางแผนวัตถุดิบ รองรับ Multi-Plant</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:12px;">
-                        <span class="badge badge-green" style="margin-bottom:6px; display:inline-block;">Active</span>
-                        <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">AI Assistant Tool</div>
-                        <div style="font-size:11px; color:rgba(255,255,255,0.4);">Python · LLM API</div>
-                        <div style="font-size:10px; color:#60a5fa; margin-top:6px;">คลิกเพื่อดูรายละเอียด →</div>
+
+                    <!-- SAP DATA -->
+                    <div class="project-card fade-up-5" style="flex:1; display:flex; flex-direction:row; overflow:hidden; min-height:0;">
+                        <div style="width:58%; flex-shrink:0; overflow:hidden; position:relative;">
+                            <img src="images/sap_data/Screenshot 2026-06-10 231121.png"
+                                 style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                            <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,13,26,0.9), transparent 60%); padding:5px 8px;">
+                                <span style="font-size:9px; color:rgba(255,255,255,0.65);">🖥️ FTD Data Center — SAP Storage Location</span>
+                            </div>
+                        </div>
+                        <div style="flex:1; padding:11px 14px; display:flex; flex-direction:column; justify-content:center; gap:6px; min-width:0; overflow:hidden;">
+                            <div>
+                                <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:0.5px; margin-bottom:2px;">SAP DATA</div>
+                                <div style="font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:5px;">FTD Data Center — SAP Master Sync</div>
+                                <div style="display:flex; flex-wrap:wrap; gap:3px;">
+                                    <span class="badge badge-green" style="font-size:9px;">Active</span>
+                                    <span class="badge badge-gold" style="font-size:9px;">SAP BAPI</span>
+                                    <span class="badge badge-purple" style="font-size:9px;">Kafka</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                                <div style="padding:4px 8px; background:rgba(245,158,11,0.07); border-radius:4px; border-left:2px solid #f59e0b;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Sync SAP Master Data → Data Center</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(96,165,250,0.07); border-radius:4px; border-left:2px solid #60a5fa;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Storage Location, BOM, Plant, Company</span>
+                                </div>
+                                <div style="padding:4px 8px; background:rgba(52,211,153,0.07); border-radius:4px; border-left:2px solid #34d399;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.82);">Re-Produce Data รองรับ Multi-Client</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div><!-- /slide-4 -->
 
 
-    <!-- ══════════════════════════════════════════════
-         SLIDES 5–9 — Current Project Detail (Template ×5)
-    ══════════════════════════════════════════════ -->
 
-    <!-- Project 3 Detail -->
-    <div class="slide" id="slide-5">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
-                <div class="section-label">Current Project 1 / 5</div>
-                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">🛒 E-Commerce Platform</h2>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <span class="badge badge-green">Active</span>
-                    <span class="badge badge-blue">Next.js</span>
-                    <span class="badge badge-blue">TypeScript</span>
-                    <span class="badge badge-gold">Tailwind CSS</span>
-                </div>
-                <div class="h-divider"></div>
-            </div>
-            <div style="flex:1; display:flex; gap:28px;">
-                <div class="project-card fade-up-1" style="flex:1.3;">
-                    <div class="project-screenshot" style="height:100%;">
-                        <img src="images/projects/project3.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span> วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project3.jpg</code>
-                        </div>
-                    </div>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
-                            แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง เช่น ระบบ Order ระบบ Product Management หรือ Payment Integration
-                        </p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
-                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!-- /slide-5 -->
-
-    <!-- Project 4 Detail -->
-    <div class="slide" id="slide-6">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
-                <div class="section-label">Current Project 2 / 5</div>
-                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">👔 HR Management Application</h2>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <span class="badge badge-green">Active</span>
-                    <span class="badge badge-blue">React Native</span>
-                    <span class="badge badge-gold">Go</span>
-                    <span class="badge badge-purple">PostgreSQL</span>
-                </div>
-                <div class="h-divider"></div>
-            </div>
-            <div style="flex:1; display:flex; gap:28px;">
-                <div class="project-card fade-up-1" style="flex:1.3;">
-                    <div class="project-screenshot" style="height:100%;">
-                        <img src="images/projects/project4.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span> วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project4.jpg</code>
-                        </div>
-                    </div>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">
-                            แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง
-                        </p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
-                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!-- /slide-6 -->
-
-    <!-- Project 5 Detail -->
-    <div class="slide" id="slide-7">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
-                <div class="section-label">Current Project 3 / 5</div>
-                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">📊 Internal Management Dashboard</h2>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <span class="badge badge-green">Active</span>
-                    <span class="badge badge-blue">React</span>
-                    <span class="badge badge-green">Firebase</span>
-                    <span class="badge badge-gold">TypeScript</span>
-                </div>
-                <div class="h-divider"></div>
-            </div>
-            <div style="flex:1; display:flex; gap:28px;">
-                <div class="project-card fade-up-1" style="flex:1.3;">
-                    <div class="project-screenshot" style="height:100%;">
-                        <img src="images/projects/project5.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span> วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project5.jpg</code>
-                        </div>
-                    </div>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
-                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!-- /slide-7 -->
-
-    <!-- Project 6 Detail -->
-    <div class="slide" id="slide-8">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
-                <div class="section-label">Current Project 4 / 5</div>
-                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">⚙️ SAP Integration Microservice API</h2>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <span class="badge badge-green">Active</span>
-                    <span class="badge badge-gold">Golang</span>
-                    <span class="badge badge-purple">SAP BAPI</span>
-                    <span class="badge badge-blue">REST API</span>
-                </div>
-                <div class="h-divider"></div>
-            </div>
-            <div style="flex:1; display:flex; gap:28px;">
-                <div class="project-card fade-up-1" style="flex:1.3;">
-                    <div class="project-screenshot" style="height:100%;">
-                        <img src="images/projects/project6.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span> วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project6.jpg</code>
-                        </div>
-                    </div>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
-                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!-- /slide-8 -->
-
-    <!-- Project 7 Detail -->
-    <div class="slide" id="slide-9">
-        <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
-            <div class="fade-up" style="margin-bottom:16px;">
-                <div class="section-label">Current Project 5 / 5</div>
-                <h2 style="font-size:34px; font-weight:800; color:#fff; margin:0 0 6px;">🤖 AI-Powered Internal Assistant Tool</h2>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <span class="badge badge-green">Active</span>
-                    <span class="badge badge-red">AI / LLM</span>
-                    <span class="badge badge-blue">Python</span>
-                    <span class="badge badge-purple">API Integration</span>
-                </div>
-                <div class="h-divider"></div>
-            </div>
-            <div style="flex:1; display:flex; gap:28px;">
-                <div class="project-card fade-up-1" style="flex:1.3;">
-                    <div class="project-screenshot" style="height:100%;">
-                        <img src="images/projects/project7.jpg" alt=""
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="project-screenshot-placeholder">
-                            <span class="icon">📸</span> วางรูป Screenshot<br>
-                            <code style="font-size:10px;">images/projects/project7.jpg</code>
-                        </div>
-                    </div>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-                    <div class="mindset-box fade-up-2">
-                        <div style="color:#fbbf24; font-size:14px; font-weight:700; margin-bottom:6px;">📌 Overview</div>
-                        <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.7; margin:0;">แก้ไขและเพิ่มรายละเอียดโปรเจกต์นี้ได้ตามจริง</p>
-                    </div>
-                    <div class="mindset-box fade-up-3">
-                        <div style="color:#34d399; font-size:14px; font-weight:700; margin-bottom:6px;">🔑 Key Features</div>
-                        <ul style="color:rgba(255,255,255,0.75); font-size:13px; line-height:1.9; margin:0; padding:0; list-style:none;">
-                            <li>▶ Feature 1 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 2 — [แก้ไขตามจริง]</li>
-                            <li>▶ Feature 3 — [แก้ไขตามจริง]</li>
-                        </ul>
-                    </div>
-                    <div class="mindset-box fade-up-4">
-                        <div style="color:#a78bfa; font-size:14px; font-weight:700; margin-bottom:6px;">📈 สถานะปัจจุบัน</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:13px;">[ใส่ % progress หรือ milestone ล่าสุด]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!-- /slide-9 -->
 
 
     <!-- ══════════════════════════════════════════════
          SLIDE 10 — Mindset
     ══════════════════════════════════════════════ -->
-    <div class="slide" id="slide-10">
+    <div class="slide" id="slide-5">
         <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column;">
             <div class="fade-up" style="margin-bottom:20px;">
                 <div class="section-label">Chapter 4 · Mindset</div>
@@ -1118,7 +1145,7 @@
     <!-- ══════════════════════════════════════════════
          SLIDE 11 — Questions to Management
     ══════════════════════════════════════════════ -->
-    <div class="slide" id="slide-11">
+    <div class="slide" id="slide-6">
         <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column; justify-content:center;">
             <div class="fade-up" style="text-align:center; margin-bottom:32px;">
                 <div class="section-label" style="text-align:center;">Chapter 5 · My Questions</div>
@@ -1160,7 +1187,7 @@
     <!-- ══════════════════════════════════════════════
          SLIDE 12 — Open Q&A
     ══════════════════════════════════════════════ -->
-    <div class="slide" id="slide-12">
+    <div class="slide" id="slide-7">
         <div style="padding:44px 60px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
             <div class="fade-up" style="font-size:80px; margin-bottom:20px;" class="anim-float">🙋</div>
             <div class="fade-up-1">
@@ -1226,7 +1253,7 @@
     resizeStage();
 
     // ── Slide system ──
-    const TOTAL = 13; // slides 0–12
+    const TOTAL = 8; // slides 0–7
     let cur = 0;
 
     function gotoSlide(n) {
