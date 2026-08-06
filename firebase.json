@@ -1,0 +1,15 @@
+{
+  "hosting": {
+    "site": "hussadee-present",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/*.pptx",
+      "**/*.xlsx",
+      "**/*.pdf",
+      "**/*.txt"
+    ]
+  }
+}
